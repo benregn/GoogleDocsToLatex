@@ -9,6 +9,14 @@ def GetFolderList():
     PrintFeed(feed)
 
 
+def SearchingTitle(query):
+    feed = client.GetDocList(
+        '/feeds/default/private/full?title=%s&title-exact=true&max-results=5'
+        % query)
+    print feed
+    PrintFeed(feed)
+
+
 def PrintFeed(feed):
     """Prints out the contents of a feed to the console."""
     print '\n'
@@ -24,7 +32,8 @@ def main():
     username = raw_input('Enter your username: ')
     password = raw_input('Enter your password: ')
     client.client_login(username, password, client.source)
-    GetFolderList()
+    #GetFolderList()
+    SearchingTitle('Level')
 
 
 if __name__ == '__main__':
