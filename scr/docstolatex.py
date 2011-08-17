@@ -13,6 +13,17 @@ def main():
 
 def GetFolderList():
     feed = client.GetDocList(uri='/feeds/default/private/full/-/folder')
+    PrintFeed(feed)
+
+
+def PrintFeed(feed):
+    """Prints out the contents of a feed to the console."""
+    print '\n'
+    if not feed.entry:
+        print 'No entries in feed.\n'
+    for entry in feed.entry:
+        print '%s /-/ %s /-/ %s' % (entry.title.text.encode('UTF-8'),
+                                    entry.GetDocumentType(), entry.id.text)
 
 
 if __name__ == '__main__':
