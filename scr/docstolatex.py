@@ -23,7 +23,7 @@ def PrintFeed(feed):
         print 'No entries in feed.\n'
     for entry in feed.entry:
         print '%s /-/ %s /-/ %s' % (entry.title.text.encode('UTF-8'),
-                                    entry.GetDocumentType(), entry.id.text)
+                                    entry.GetDocumentType(), entry.resource_id.text)
 
 
 if __name__ == '__main__':
