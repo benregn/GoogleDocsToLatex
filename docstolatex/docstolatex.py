@@ -23,19 +23,21 @@ def print_feed(feed):
     print '\n'
     if not feed.entry:
         print 'No entries in feed.\n'
+    print '%-30s %-20s %-12s %s' % ('TITLE', 'PARENT', 'TYPE', 'RESOURCE ID')
     for entry in feed.entry:
-        print '%s /-/ %s /-/ %s' % (entry.title.text.encode('UTF-8'),
-                                    entry.GetDocumentType(),
-                                    entry.resource_id.text)
-
+        print '%-30s %-20s %-12s %s' % (entry.title.text.encode('UTF-8'),
+                                        [f.title for f in entry.InFolders()],
+                                        entry.GetDocumentType(),
+                                        entry.resource_id.text)
+    
 
 def main():
     username = raw_input('Enter your username: ')
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
     client.client_login(username, password, client.source)
-    #get_folder_list()
-    searching_title('Level')
+    get_folder_list()
+    #searching_title('Level')
 
 
 if __name__ == '__main__':
