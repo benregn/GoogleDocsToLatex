@@ -28,17 +28,18 @@ class DocsToLaTeX():
             '/feeds/default/private/full?title=%s&title-exact=true&max-results=5'
             % query)
         print feed
-        print_feed(feed)
+        self.print_feed(feed)
 
 
     def get_selected_folder(self, folder_name):
-        feed = get_folder_list()
+        feed = self.get_folder_list()
         for folder in feed.entry:
             if folder.title.text.encode('UTF-8') == folder_name:
                 print 'Contents of folder: ' + folder_name + '   ' + folder.content.src
                 folder_feed = client.GetDocList(uri=folder.content.src)
-                for doc in folder_feed.entry:
-                    print doc.title.text, [f.title for f in doc.InFolders()]
+                self.print_feed(folder_feed)
+                #for doc in folder_feed.entry:
+                #    print doc.title.text, [f.title for f in doc.InFolders()]
 
 
 def main():
@@ -47,7 +48,7 @@ def main():
     #password = getpass('Enter your password: ')
     client.client_login(username, password, client.source)
     dtl = DocsToLaTeX()
-    dtl.print_feed(get_folder_list())
+    dtl.print_feed(dtl.get_folder_list())
     folder_name = raw_input('Select folder: ')
     dtl.get_selected_folder(folder_name)
     #searching_title('Level')
