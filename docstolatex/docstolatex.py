@@ -32,7 +32,6 @@ class DocsToLaTeX():
             if folder.title.text.encode('UTF-8') == folder_name:
                 folder_feed = client.GetDocList(uri=folder.content.src)
                 print 'Contents of ' + folder_name + ':'
-                print folder_feed
                 self.download_folder_contents(folder_feed)
 
 
@@ -41,8 +40,6 @@ class DocsToLaTeX():
 
         for entry in folder_feed.entry:
             if entry.GetDocumentType() == 'folder':
-                #print entry
-                #print 'collection'
                 print '\n' + entry.title.text.encode('UTF-8')
                 self.download_folder_contents(client.GetDocList(uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
