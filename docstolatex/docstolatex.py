@@ -1,4 +1,5 @@
 from gdata.docs import client
+from getpass import getpass
 
 
 client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
@@ -31,6 +32,7 @@ def print_feed(feed):
 def main():
     username = raw_input('Enter your username: ')
     password = raw_input('Enter your password: ')
+    #password = getpass('Enter your password: ')
     client.client_login(username, password, client.source)
     #get_folder_list()
     searching_title('Level')
