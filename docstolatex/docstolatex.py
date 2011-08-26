@@ -20,7 +20,7 @@ def print_feed(feed):
 
 def get_folder_list():
     feed = client.GetDocList(uri='/feeds/default/private/full/-/folder')
-    print_feed(feed)
+    return feed
 
 
 def searching_title(query):
@@ -46,7 +46,7 @@ def main():
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
     client.client_login(username, password, client.source)
-    get_folder_list()
+    print_feed(get_folder_list())
     folder_name = raw_input('Select folder: ')
     get_selected_folder(folder_name)
     #searching_title('Level')
