@@ -1,10 +1,13 @@
 from gdata.docs import client
+import os
 from getpass import getpass
 
 
 client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
 
 class DocsToLaTeX():
+    base_file_path = os.getcwd() + '\\doctest'
+
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
         print '\n'
