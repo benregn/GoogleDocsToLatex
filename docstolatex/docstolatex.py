@@ -23,19 +23,11 @@ class DocsToLaTeX():
         return feed
 
 
-    def searching_title(self, query):
-        feed = client.GetDocList(
-            '/feeds/default/private/full?title=%s&title-exact=true&max-results=5'
-            % query)
-        print feed
-        self.print_feed(feed)
-
-
     def get_selected_folder(self, folder_name):
         feed = self.get_folder_list()
         for folder in feed.entry:
             if folder.title.text.encode('UTF-8') == folder_name:
-                print 'Contents of folder: ' + folder_name + '   ' + folder.content.src
+                print 'Contents of folder: ' + folder_name
                 folder_feed = client.GetDocList(uri=folder.content.src)
                 self.print_feed(folder_feed)
                 #for doc in folder_feed.entry:
