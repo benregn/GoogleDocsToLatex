@@ -23,7 +23,7 @@ class DocsToLaTeX():
         return feed
 
 
-    def get_selected_folder(self, folder_name):
+    def find_selected_folder(self, folder_name):
         feed = self.get_folder_list()
         for folder in feed.entry:
             if folder.title.text.encode('UTF-8') == folder_name:
@@ -42,7 +42,7 @@ def main():
     dtl = DocsToLaTeX()
     dtl.print_feed(dtl.get_folder_list())
     folder_name = raw_input('Select folder: ')
-    dtl.get_selected_folder(folder_name)
+    dtl.find_selected_folder(folder_name)
     #searching_title('Level')
 
 
