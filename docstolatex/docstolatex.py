@@ -6,7 +6,8 @@ from getpass import getpass
 client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
 
 class DocsToLaTeX():
-    base_file_path = os.getcwd() + '\\doctest'
+    docs_folder = ''
+    base_file_path = os.getcwd()
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
@@ -56,9 +57,9 @@ def main():
     client.client_login(username, password, client.source)
     dtl = DocsToLaTeX()
     dtl.print_feed(dtl.get_folder_list())
-    folder_name = raw_input('Select folder: ')
-    dtl.find_selected_folder(folder_name)
-    #searching_title('Level')
+    dtl.docs_folder = raw_input('Select folder: ')
+    dtl.base_file_path = dtl.base_file_path + '\\' + dtl.docs_folder
+    dtl.find_selected_folder(dtl.docs_folder)
 
 
 if __name__ == '__main__':
