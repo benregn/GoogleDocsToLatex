@@ -10,7 +10,7 @@ class DocsToLaTeX():
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
-        table_format = '%-30s %-20s %-12s %s'
+        table_format = '    %-30s %-20s %-12s %s'
         print '\n'
         if not feed.entry:
             print 'No entries in feed.\n'
