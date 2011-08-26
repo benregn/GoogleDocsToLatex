@@ -27,11 +27,23 @@ class DocsToLaTeX():
         feed = self.get_folder_list()
         for folder in feed.entry:
             if folder.title.text.encode('UTF-8') == folder_name:
-                print 'Contents of folder: ' + folder_name
                 folder_feed = client.GetDocList(uri=folder.content.src)
-                self.print_feed(folder_feed)
-                #for doc in folder_feed.entry:
-                #    print doc.title.text, [f.title for f in doc.InFolders()]
+                print 'Contents of ' + folder_name + ':'
+                print folder_feed
+                self.download_folder_contents(folder_feed)
+
+
+    def download_folder_contents(self, folder_feed):
+        self.print_feed(folder_feed)
+
+        for entry in folder_feed.entry:
+            if entry.GetDocumentType() == 'folder':
+                #print entry
+                #print 'collection'
+                print '\n' + entry.title.text.encode('UTF-8')
+                self.download_folder_contents(client.GetDocList(uri=entry.content.src))
+            elif entry.GetDocumentType() == 'document':
+                print 'doc'
 
 
 def main():
