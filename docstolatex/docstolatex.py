@@ -7,7 +7,7 @@ client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
 
 class DocsToLaTeX():
     docs_folder = ''
-    base_file_path = os.getcwd()
+    base_path = os.getcwd()
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
@@ -64,12 +64,12 @@ class DocsToLaTeX():
         # saved in the root
         if current_folder_name == self.docs_folder:
             print 'Document is in the base folder.'
-            file_path = self.base_file_path + '\\' + document_name + file_ext
+            file_path = self.base_path + '\\' + document_name + file_ext
             client.Export(entry, file_path)
             print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
         else:
             print 'Document is in ' + current_folder_name
-            file_path = self.base_file_path + '\\' + current_folder_name \
+            file_path = self.base_path + '\\' + current_folder_name \
             + '\\' + document_name + '\\' + file_ext
             client.Export(entry, file_path)
             print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
@@ -83,8 +83,8 @@ def main():
     dtl = DocsToLaTeX()
     dtl.print_feed(dtl.get_folder_list())
     dtl.docs_folder = raw_input('Select folder: ')
-    dtl.base_file_path = dtl.base_file_path + '\\' + dtl.docs_folder
-    print 'File path to save to is:' + dtl.base_file_path
+    dtl.base_path = dtl.base_path + '\\' + dtl.docs_folder
+    print 'File path to save to is:' + dtl.base_path
     dtl.find_selected_folder()
 
 
