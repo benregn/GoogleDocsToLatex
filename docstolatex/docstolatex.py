@@ -86,7 +86,7 @@ class DocsToLaTeX():
 #            if os.path.isdir(path):
                 try:
                     print 'trying to make dir'
-                    os.mkdir(path)
+                    os.makedirs(path)
                     return True
                 except OSError, e:
                     if e.errno == errno.EEXIST:
