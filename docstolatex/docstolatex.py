@@ -47,7 +47,23 @@ class DocsToLaTeX():
                 print '\n' + entry.title.text.encode('UTF-8')
                 self.download_folder_contents(client.GetDocList(uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
-                print 'doc'
+                self.download_document(entry)
+    
+
+    def download_document(self, entry):
+        print 'doc'
+        # if document is in the root collection, then it is
+        # saved in the root
+        print 'entry.InFolders()[0].title: ' + entry.InFolders()[0].title
+        print 'docs_folder: ' + self.docs_folder
+        if entry.InFolders()[0].title == self.docs_folder:
+            print 'Saved in folder: ' + entry.InFolders()[0].title
+            print 'Document is in the base folder.'
+            file_path = self.base_file_path + '\\' \
+            + entry.title.text.encode('UTF-8') + '.txt'
+            client.Export(entry, file_path)
+        else:
+            pass
 
 
 def main():
