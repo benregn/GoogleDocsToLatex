@@ -30,12 +30,12 @@ class DocsToLaTeX():
         return feed
 
 
-    def find_selected_folder(self, folder_name):
+    def find_selected_folder(self):
         feed = self.get_folder_list()
         for folder in feed.entry:
-            if folder.title.text.encode('UTF-8') == folder_name:
+            if folder.title.text.encode('UTF-8') == self.docs_folder:
                 folder_feed = client.GetDocList(uri=folder.content.src)
-                print 'Contents of ' + folder_name + ':'
+                print 'Contents of ' + self.docs_folder + ':'
                 self.download_folder_contents(folder_feed)
 
 
@@ -59,7 +59,8 @@ def main():
     dtl.print_feed(dtl.get_folder_list())
     dtl.docs_folder = raw_input('Select folder: ')
     dtl.base_file_path = dtl.base_file_path + '\\' + dtl.docs_folder
-    dtl.find_selected_folder(dtl.docs_folder)
+    print 'File path to save to is:' + dtl.base_file_path
+    dtl.find_selected_folder()
 
 
 if __name__ == '__main__':
