@@ -1,5 +1,7 @@
+import errno
 from gdata.docs import client
 import os
+import errno
 from getpass import getpass
 
 
@@ -65,14 +67,36 @@ class DocsToLaTeX():
         if current_folder_name == self.docs_folder:
             print 'Document is in the base folder.'
             file_path = self.base_path + '\\' + document_name + file_ext
-            client.Export(entry, file_path)
+            if self.make_directory(file_path):
+                client.Export(entry, file_path)
             print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
         else:
             print 'Document is in ' + current_folder_name
             file_path = self.base_path + '\\' + current_folder_name \
-            + '\\' + document_name + '\\' + file_ext
-            client.Export(entry, file_path)
+            + '\\' + document_name + file_ext
+            if self.make_directory(file_path):
+                client.Export(entry, file_path)
             print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
+
+
+    def make_directory(self, file_path):
+        path = os.path.dirname(file_path)
+        print path
+        if not os.path.exists(path):
+#            if os.path.isdir(path):
+                try:
+                    print 'trying to make dir'
+                    os.mkdir(path)
+                    return True
+                except OSError, e:
+                    if e.errno == errno.EEXIST:
+                        pass
+                    raise
+#            else:
+#                print 'path is not a folder!'
+        else:
+            print 'folder existed.'
+            return True
 
 
 def main():
