@@ -51,19 +51,28 @@ class DocsToLaTeX():
     
 
     def download_document(self, entry):
+        current_folder_name = entry.InFolders()[0].title
+        document_name = entry.title.text.encode('UTF-8')
+        file_ext = '.txt'
+
         print 'doc'
+        print 'entry.InFolders()[0].title: ' + current_folder_name
+        print 'docs_folder: ' + self.docs_folder
+        print 'document_name: ' + document_name
+
         # if document is in the root collection, then it is
         # saved in the root
-        print 'entry.InFolders()[0].title: ' + entry.InFolders()[0].title
-        print 'docs_folder: ' + self.docs_folder
-        if entry.InFolders()[0].title == self.docs_folder:
-            print 'Saved in folder: ' + entry.InFolders()[0].title
+        if current_folder_name == self.docs_folder:
             print 'Document is in the base folder.'
-            file_path = self.base_file_path + '\\' \
-            + entry.title.text.encode('UTF-8') + '.txt'
+            file_path = self.base_file_path + '\\' + document_name + file_ext
             client.Export(entry, file_path)
+            print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
         else:
-            pass
+            print 'Document is in ' + current_folder_name
+            file_path = self.base_file_path + '\\' + current_folder_name \
+            + '\\' + document_name + '\\' + file_ext
+            client.Export(entry, file_path)
+            print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
 
 
 def main():
