@@ -98,17 +98,23 @@ class DocsToLaTeX():
             return True
 
 
-def main():
+def run():
+    dtl = DocsToLaTeX()
+
     username = raw_input('Enter your username: ')
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
-    dtl = DocsToLaTeX()
     dtl.client.client_login(username, password, dtl.client.source)
+
     dtl.print_feed(dtl.get_folder_list())
     dtl.docs_folder = raw_input('Select folder: ')
     dtl.base_path = dtl.base_path + '\\' + dtl.docs_folder
-    print 'File path to save to is:' + dtl.base_path
+    print 'File path to save to is: ' + dtl.base_path
     dtl.find_selected_folder()
+
+
+def main():
+    run()
 
 
 if __name__ == '__main__':
