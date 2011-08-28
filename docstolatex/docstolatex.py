@@ -79,6 +79,8 @@ class DocsToLaTeX():
                 self.client.Export(entry, file_path)
             print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
 
+        self.remove_ext_txt(file_path)
+
 
     def download_file(self, entry):
         current_folder_name = entry.InFolders()[0].title
@@ -116,6 +118,12 @@ class DocsToLaTeX():
         else:
             print 'folder existed.'
             return True
+
+
+    def remove_ext_txt(self, path_to_file):
+        shortened_path = path_to_file[:-4]
+        print '='*50 + '\n' + shortened_path + '\n' + '='*50
+        os.rename(path_to_file, shortened_path)
 
 
 def run():
