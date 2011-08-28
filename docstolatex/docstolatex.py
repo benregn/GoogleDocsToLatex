@@ -5,9 +5,8 @@ import errno
 from getpass import getpass
 
 
-client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
-
 class DocsToLaTeX():
+    client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
     docs_folder = ''
     base_path = os.getcwd()
 
@@ -28,7 +27,7 @@ class DocsToLaTeX():
 
 
     def get_folder_list(self):
-        feed = client.GetDocList(uri='/feeds/default/private/full/-/folder')
+        feed = self.client.GetDocList(uri='/feeds/default/private/full/-/folder')
         return feed
 
 
@@ -36,7 +35,7 @@ class DocsToLaTeX():
         feed = self.get_folder_list()
         for folder in feed.entry:
             if folder.title.text.encode('UTF-8') == self.docs_folder:
-                folder_feed = client.GetDocList(uri=folder.content.src)
+                folder_feed = self.client.GetDocList(uri=folder.content.src)
                 print 'Contents of ' + self.docs_folder + ':'
                 self.download_folder_contents(folder_feed)
 
@@ -47,7 +46,7 @@ class DocsToLaTeX():
         for entry in folder_feed.entry:
             if entry.GetDocumentType() == 'folder':
                 print '\n' + entry.title.text.encode('UTF-8')
-                self.download_folder_contents(client.GetDocList(uri=entry.content.src))
+                self.download_folder_contents(self.client.GetDocList(uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
                 self.download_document(entry)
     
@@ -68,14 +67,14 @@ class DocsToLaTeX():
             print 'Document is in the base folder.'
             file_path = self.base_path + '\\' + document_name + file_ext
             if self.make_directory(file_path):
-                client.Export(entry, file_path)
+                self.client.Export(entry, file_path)
             print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
         else:
             print 'Document is in ' + current_folder_name
             file_path = self.base_path + '\\' + current_folder_name \
             + '\\' + document_name + file_ext
             if self.make_directory(file_path):
-                client.Export(entry, file_path)
+                self.client.Export(entry, file_path)
             print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
 
 
@@ -103,8 +102,8 @@ def main():
     username = raw_input('Enter your username: ')
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
-    client.client_login(username, password, client.source)
     dtl = DocsToLaTeX()
+    dtl.client.client_login(username, password, dtl.client.source)
     dtl.print_feed(dtl.get_folder_list())
     dtl.docs_folder = raw_input('Select folder: ')
     dtl.base_path = dtl.base_path + '\\' + dtl.docs_folder
