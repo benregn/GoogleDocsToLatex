@@ -49,6 +49,8 @@ class DocsToLaTeX():
                 self.download_folder_contents(self.client.GetDocList(uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
                 self.download_document(entry)
+            else:
+                self.download_file(entry)
     
 
     def download_document(self, entry):
@@ -77,6 +79,24 @@ class DocsToLaTeX():
                 self.client.Export(entry, file_path)
             print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
 
+
+    def download_file(self, entry):
+        current_folder_name = entry.InFolders()[0].title
+        document_name = entry.title.text.encode('UTF-8')
+
+        if current_folder_name == self.docs_folder:
+            print 'File is in the base folder.'
+            file_path = self.base_path + '\\' + document_name
+            if self.make_directory(file_path):
+                self.client.Download(entry, file_path)
+            print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
+        else:
+            print 'File is in ' + current_folder_name
+            file_path = self.base_path + '\\' + current_folder_name \
+            + '\\' + document_name
+            if self.make_directory(file_path):
+                self.client.Download(entry, file_path)
+            print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
 
     def make_directory(self, file_path):
         path = os.path.dirname(file_path)
