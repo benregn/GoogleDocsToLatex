@@ -103,7 +103,6 @@ class DocsToLaTeX():
         path = os.path.dirname(file_path)
         print path
         if not os.path.exists(path):
-#            if os.path.isdir(path):
                 try:
                     print 'trying to make dir'
                     os.makedirs(path)
@@ -112,8 +111,6 @@ class DocsToLaTeX():
                     if e.errno == errno.EEXIST:
                         pass
                     raise
-#            else:
-#                print 'path is not a folder!'
         else:
             print 'folder existed.'
             return True
