@@ -122,8 +122,13 @@ class DocsToLaTeX():
     def remove_ext_txt(self, path_to_file):
         shortened_path = path_to_file[:-4]
         print '='*50 + '\n' + shortened_path + '\n' + '='*50
-        os.rename(path_to_file, shortened_path)
 
+        # os.rename does not overwrite, so remove old copy first
+        if os.path.exists(shortened_path):
+            os.remove(shortened_path)
+            os.rename(path_to_file, shortened_path)
+        else:
+            os.rename(path_to_file, shortened_path)
 
 def run():
     dtl = DocsToLaTeX()
