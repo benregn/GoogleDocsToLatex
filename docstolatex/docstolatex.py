@@ -7,6 +7,7 @@ from getpass import getpass
 
 class DocsToLaTeX():
     client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
+    document_list = None
     docs_folder = ''
     base_path = os.getcwd()
 
@@ -27,13 +28,11 @@ class DocsToLaTeX():
 
 
     def get_folder_list(self):
-        feed = self.client.GetDocList(uri='/feeds/default/private/full/-/folder')
-        return feed
+        self.document_list = self.client.GetDocList(uri='/feeds/default/private/full/-/folder')
 
 
     def find_selected_folder(self):
-        feed = self.get_folder_list()
-        for folder in feed.entry:
+        for folder in self.document_list.entry:
             if folder.title.text.encode('UTF-8') == self.docs_folder:
                 folder_feed = self.client.GetDocList(uri=folder.content.src)
                 print 'Contents of ' + self.docs_folder + ':'
@@ -134,7 +133,8 @@ def run():
     #password = getpass('Enter your password: ')
     dtl.client.client_login(username, password, dtl.client.source)
 
-    dtl.print_feed(dtl.get_folder_list())
+    dtl.get_folder_list()
+    dtl.print_feed(dtl.document_list)
     dtl.docs_folder = raw_input('Select folder: ')
     dtl.base_path = dtl.base_path + '\\' + dtl.docs_folder
     print 'File path to save to is: ' + dtl.base_path
