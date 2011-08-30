@@ -127,24 +127,24 @@ class DocsToLaTeX():
         else:
             os.rename(path_to_file, shortened_path)
 
-def run():
-    dtl = DocsToLaTeX()
 
-    username = raw_input('Enter your username: ')
-    password = raw_input('Enter your password: ')
-    #password = getpass('Enter your password: ')
-    dtl.client.client_login(username, password, dtl.client.source)
+    def run(self):
+        username = raw_input('Enter your username: ')
+        password = raw_input('Enter your password: ')
+        #password = getpass('Enter your password: ')
+        self.client.client_login(username, password, self.client.source)
 
-    dtl.get_folder_list()
-    dtl.print_feed(dtl.document_list)
-    dtl.docs_folder = raw_input('Select folder: ')
-    dtl.base_path = dtl.base_path + '\\' + dtl.docs_folder
-    print 'File path to save to is: ' + dtl.base_path
-    dtl.find_selected_folder()
+        self.get_folder_list()
+        self.print_feed(self.document_list)
+        self.docs_folder = raw_input('Select folder: ')
+        self.base_path = self.base_path + '\\' + self.docs_folder
+        print 'File path to save to is: ' + self.base_path
+        self.find_selected_folder()
 
 
 def main():
-    run()
+    dtl = DocsToLaTeX()
+    dtl.run()
 
 
 if __name__ == '__main__':
