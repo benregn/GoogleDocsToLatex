@@ -2,6 +2,7 @@ import errno
 from gdata.docs import client
 import os
 import errno
+import subprocess
 from getpass import getpass
 
 
@@ -132,6 +133,21 @@ class DocsToLaTeX():
             os.rename(path_to_file, shortened_path)
 
 
+    def compile_to_latex(self, filename):
+        file_path = self.find_file_to_compile(filename, self.base_path)
+        output_directory = os.path.join(self.base_path)
+
+        pdflatex = list()
+        pdflatex.append('pdflatex')
+        pdflatex.append('{}'.format(file_path))
+        pdflatex.append('-interaction=nonstopmode')
+        pdflatex.append('-output-directory={}'.format(output_directory))
+        return_value = subprocess.call(pdflatex)
+
+        if return_value == 1:
+            print('Something went wrong. Check the log file.')
+
+
     def find_file_to_compile(self, filename, path):
         for root, dirs, files in os.walk(path):
             for name in files:
@@ -153,6 +169,7 @@ class DocsToLaTeX():
         self.base_path = os.path.join(self.base_path, self.docs_folder)
         print 'File path to save to is: ' + self.base_path
         self.find_selected_folder()
+        self.compile_to_latex('latexsheet.tex')
 
 
 def main():
