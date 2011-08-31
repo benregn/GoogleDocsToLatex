@@ -66,17 +66,19 @@ class DocsToLaTeX():
         # saved in the root
         if current_folder_name == self.docs_folder:
             print 'Document is in the base folder.'
-            file_path = self.base_path + '\\' + document_name + file_ext
+            file_path = os.path.join(self.base_path, document_name + file_ext)
             if self.make_directory(file_path):
                 self.client.Export(entry, file_path)
-            print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
+            print 'Saved in folder: ' + os.sep + current_folder_name + os.sep \
+            + '\n'
         else:
             print 'Document is in ' + current_folder_name
-            file_path = self.base_path + '\\' + current_folder_name \
-            + '\\' + document_name + file_ext
+            file_path = os.path.join(self.base_path, current_folder_name,
+                                     document_name + file_ext)
             if self.make_directory(file_path):
                 self.client.Export(entry, file_path)
-            print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
+            print 'Saved in subfolder: ' + os.sep + current_folder_name + \
+                  os.sep + '\n'
 
         self.remove_ext_txt(file_path)
 
@@ -87,17 +89,19 @@ class DocsToLaTeX():
 
         if current_folder_name == self.docs_folder:
             print 'File is in the base folder.'
-            file_path = self.base_path + '\\' + document_name
+            file_path = os.path.join(self.base_path, document_name)
             if self.make_directory(file_path):
                 self.client.Download(entry, file_path)
-            print 'Saved in folder: ' + '\\' + current_folder_name + '\\\n'
+            print 'Saved in folder: ' + os.sep + current_folder_name + \
+                  os.sep + '\n'
         else:
             print 'File is in ' + current_folder_name
-            file_path = self.base_path + '\\' + current_folder_name \
-            + '\\' + document_name
+            file_path = os.path.join(self.base_path, current_folder_name,
+                                     document_name)
             if self.make_directory(file_path):
                 self.client.Download(entry, file_path)
-            print 'Saved in subfolder: ' + '\\' + current_folder_name + '\\\n'
+            print 'Saved in subfolder: ' + os.sep + current_folder_name + \
+                  os.sep + '\n'
 
     def make_directory(self, file_path):
         path = os.path.dirname(file_path)
@@ -137,7 +141,7 @@ class DocsToLaTeX():
         self.get_folder_list()
         self.print_feed(self.document_list)
         self.docs_folder = raw_input('Select folder: ')
-        self.base_path = self.base_path + '\\' + self.docs_folder
+        self.base_path = os.path.join(self.base_path, self.docs_folder)
         print 'File path to save to is: ' + self.base_path
         self.find_selected_folder()
 
