@@ -108,7 +108,7 @@ class DocsToLaTeX():
         print path
         if not os.path.exists(path):
                 try:
-                    print 'trying to make dir'
+                    print 'Attempting to create folder.'
                     os.makedirs(path)
                     return True
                 except OSError, e:
@@ -116,7 +116,7 @@ class DocsToLaTeX():
                         pass
                     raise
         else:
-            print 'folder existed.'
+            print 'Folder existed.'
             return True
 
 
