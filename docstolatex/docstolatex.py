@@ -132,6 +132,15 @@ class DocsToLaTeX():
             os.rename(path_to_file, shortened_path)
 
 
+    def find_file_to_compile(self, filename, path):
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                if filename == name:
+                    return os.path.join(root, name)
+                else:
+                    print '{} not found'.format(filename)
+
+
     def run(self):
         username = raw_input('Enter your username: ')
         password = raw_input('Enter your password: ')
