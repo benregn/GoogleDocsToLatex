@@ -105,12 +105,15 @@ class DocsToLaTeX():
                   os.sep + '\n'
 
     def make_directory(self, file_path):
-        path = os.path.dirname(file_path)
-        print path
-        if not os.path.exists(path):
+        if os.path.splitext(file_path)[1]:
+            file_path = os.path.dirname(file_path)
+
+        print 'make_directory ' + file_path
+
+        if not os.path.exists(file_path):
                 try:
                     print 'Attempting to create folder.'
-                    os.makedirs(path)
+                    os.makedirs(file_path)
                     return True
                 except OSError, e:
                     if e.errno == errno.EEXIST:
