@@ -3,6 +3,7 @@ from gdata.docs import client
 import os
 import errno
 import subprocess
+import shutil
 from getpass import getpass
 
 
@@ -149,6 +150,8 @@ class DocsToLaTeX():
 
         if return_value == 1:
             print('Something went wrong. Check the log file.')
+        else:
+            self.cleanup_latex()
 
 
     def find_file_to_compile(self, filename, path):
@@ -158,6 +161,19 @@ class DocsToLaTeX():
                     return os.path.join(root, name)
                 else:
                     print '{} not found'.format(filename)
+
+
+    def cleanup_latex(self):
+        source = self.base_path
+        destination = os.path.join(self.base_path, 'temp')
+        self.make_directory(destination)
+        print destination
+
+        for file in os.listdir(source):
+            if not file.endswith('.tex') or file.endswith('.pdf'):
+                print 'CleanUp: ' + file
+                print 'source + file: ' + os.path.join(source, file)
+                shutil.move(os.path.join(source, file), destination)
 
 
     def run(self):
