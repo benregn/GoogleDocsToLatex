@@ -172,7 +172,12 @@ class DocsToLaTeX():
         self.base_path = os.path.join(self.base_path, self.docs_folder)
         print 'File path to save to is: ' + self.base_path
         self.find_selected_folder()
-        self.compile_to_latex('latexsheet.tex')
+        
+        main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
+        if main_latex_file:
+            self.compile_to_latex('latexsheet.tex')
+        else:
+            print 'No file name entered.'
 
 
 def main():
