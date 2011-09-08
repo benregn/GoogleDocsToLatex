@@ -191,7 +191,7 @@ class DocsToLaTeX():
         
         main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
         if main_latex_file:
-            self.compile_to_latex('latexsheet.tex')
+            self.compile_to_latex(main_latex_file)
         else:
             print 'No file name entered.'
 
