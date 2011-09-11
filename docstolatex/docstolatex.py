@@ -164,16 +164,17 @@ class DocsToLaTeX():
 
 
     def cleanup_latex(self):
-        source = self.base_path
-        destination = os.path.join(self.base_path, 'temp')
-        self.make_directory(destination)
-        print destination
+        LATEX_TEMP_EXT = ('.aux', '.bbl', '.blg', '.log', '.toc', '.lof', '.lot',)
+        temp_folder_name = 'temp'
 
-        for file in os.listdir(source):
-            if not file.endswith('.tex') or file.endswith('.pdf'):
-                print 'CleanUp: ' + file
-                print 'source + file: ' + os.path.join(source, file)
-                shutil.move(os.path.join(source, file), destination)
+        for root, dirs, files in os.walk(self.base_path):
+                for file in files:
+                    if file.endswith(LATEX_TEMP_EXT):
+                        source = os.path.join(root, file)
+                        destination = os.path.join(root, temp_folder_name, file)
+                        if not os.path.exists(destination): # path has to exist before shutil.move
+                            self.make_directory(destination)
+                        shutil.move(source, destination)
 
 
     def run(self):
@@ -188,7 +189,7 @@ class DocsToLaTeX():
         self.base_path = os.path.join(self.base_path, self.docs_folder)
         print 'File path to save to is: ' + self.base_path
         self.find_selected_folder()
-        
+
         main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
         if main_latex_file:
             self.compile_to_latex(main_latex_file)
