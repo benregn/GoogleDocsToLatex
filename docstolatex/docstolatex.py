@@ -69,7 +69,7 @@ class DocsToLaTeX():
         if current_folder_name == self.docs_folder:
             print 'Document is in the base folder.'
             file_path = os.path.join(self.base_path, document_name + file_ext)
-            if self.make_directory(file_path):
+            if make_directory(file_path):
                 self.client.Export(entry, file_path)
             print 'Saved in folder: ' + os.sep + current_folder_name + os.sep \
             + '\n'
@@ -77,7 +77,7 @@ class DocsToLaTeX():
             print 'Document is in ' + current_folder_name
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name + file_ext)
-            if self.make_directory(file_path):
+            if make_directory(file_path):
                 self.client.Export(entry, file_path)
             print 'Saved in subfolder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
@@ -92,7 +92,7 @@ class DocsToLaTeX():
         if current_folder_name == self.docs_folder:
             print 'File is in the base folder.'
             file_path = os.path.join(self.base_path, document_name)
-            if self.make_directory(file_path):
+            if make_directory(file_path):
                 self.client.Download(entry, file_path)
             print 'Saved in folder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
@@ -100,29 +100,10 @@ class DocsToLaTeX():
             print 'File is in ' + current_folder_name
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name)
-            if self.make_directory(file_path):
+            if make_directory(file_path):
                 self.client.Download(entry, file_path)
             print 'Saved in subfolder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
-
-    def make_directory(self, file_path):
-        if os.path.splitext(file_path)[1]:
-            file_path = os.path.dirname(file_path)
-
-        print 'make_directory ' + file_path
-
-        if not os.path.exists(file_path):
-                try:
-                    print 'Attempting to create folder.'
-                    os.makedirs(file_path)
-                    return True
-                except OSError, e:
-                    if e.errno == errno.EEXIST:
-                        pass
-                    raise
-        else:
-            print 'Folder existed.'
-            return True
 
 
     def remove_ext_txt(self, path_to_file):
@@ -137,15 +118,23 @@ class DocsToLaTeX():
             os.rename(path_to_file, path_without_ext)
 
 
+class CompileLaTeX():
+    def __init__(self, base_path):
+        self.base_path = base_path
+
     def compile_to_latex(self, filename):
         file_path = self.find_file_to_compile(filename, self.base_path)
+        print 'compile to latex : file_path ' + file_path
         output_directory = os.path.join(self.base_path)
+        print 'compile to latex : output_directory ' + output_directory
 
         pdflatex = list()
         pdflatex.append('pdflatex')
         pdflatex.append('{}'.format(file_path))
         pdflatex.append('-interaction=nonstopmode')
         pdflatex.append('-output-directory={}'.format(output_directory))
+        print 'compile to latex : pdflatex '
+        print pdflatex
         return_value = subprocess.call(pdflatex)
 
         if return_value == 1:
@@ -158,6 +147,7 @@ class DocsToLaTeX():
         for root, dirs, files in os.walk(path):
             for name in files:
                 if filename == name:
+                    print 'file found'
                     return os.path.join(root, name)
                 else:
                     print '{} not found'.format(filename)
@@ -173,33 +163,50 @@ class DocsToLaTeX():
                         source = os.path.join(root, file)
                         destination = os.path.join(root, temp_folder_name, file)
                         if not os.path.exists(destination): # path has to exist before shutil.move
-                            self.make_directory(destination)
+                            make_directory(destination)
                         shutil.move(source, destination)
 
 
-    def run(self):
-        username = raw_input('Enter your username: ')
-        password = raw_input('Enter your password: ')
-        #password = getpass('Enter your password: ')
-        self.client.client_login(username, password, self.client.source)
+def make_directory(file_path):
+    if os.path.splitext(file_path)[1]:
+        file_path = os.path.dirname(file_path)
 
-        self.get_folder_list()
-        self.print_feed(self.document_list)
-        self.docs_folder = raw_input('Select folder: ')
-        self.base_path = os.path.join(self.base_path, self.docs_folder)
-        print 'File path to save to is: ' + self.base_path
-        self.find_selected_folder()
+    print 'make_directory ' + file_path
 
-        main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
-        if main_latex_file:
-            self.compile_to_latex(main_latex_file)
-        else:
-            print 'No file name entered.'
+    if not os.path.exists(file_path):
+            try:
+                print 'Attempting to create folder.'
+                os.makedirs(file_path)
+                return True
+            except OSError, e:
+                if e.errno == errno.EEXIST:
+                    pass
+                raise
+    else:
+        print 'Folder existed.'
+        return True
 
 
 def main():
     dtl = DocsToLaTeX()
-    dtl.run()
+    username = raw_input('Enter your username: ')
+    password = raw_input('Enter your password: ')
+    #password = getpass('Enter your password: ')
+    dtl.client.client_login(username, password, dtl.client.source)
+
+    dtl.get_folder_list()
+    dtl.print_feed(dtl.document_list)
+    dtl.docs_folder = raw_input('Select folder: ')
+    dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
+    print 'File path to save to is: ' + dtl.base_path
+    dtl.find_selected_folder()
+
+    comp_latex = CompileLaTeX(dtl.base_path)
+    main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
+    if main_latex_file:
+        comp_latex.compile_to_latex(main_latex_file)
+    else:
+        print 'No file name entered.'
 
 
 if __name__ == '__main__':
