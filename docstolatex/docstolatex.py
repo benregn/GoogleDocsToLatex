@@ -15,18 +15,16 @@ class DocsToLaTeX():
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
-        table_format = '    %-30s %-20s %-12s %s'
+        table_format = '    %-30s %-20s %-12s'
         print '\n'
         if not feed.entry:
             print 'No entries in feed.\n'
         else:
-            print table_format % ('TITLE', 'PARENT', 'TYPE',
-                                            'RESOURCE ID')
+            print table_format % ('TITLE', 'PARENT', 'TYPE')
             for entry in feed.entry:
                 print table_format % (entry.title.text.encode('UTF-8'),
                                       [f.title for f in entry.InFolders()],
-                                      entry.GetDocumentType(),
-                                      entry.resource_id.text)
+                                      entry.GetDocumentType())
 
 
     def get_folder_list(self):
