@@ -1,4 +1,3 @@
-import errno
 from gdata.docs import client
 import os
 import errno
