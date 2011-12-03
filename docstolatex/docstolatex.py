@@ -115,6 +115,20 @@ class DocsToLaTeX():
         else:
             os.rename(path_to_file, path_without_ext)
 
+    def check_for_tex_extension(self, path):
+#        print "In check for tex"
+#        print "os.path.splitext(file_path)[1]" + os.path.splitext(file_path)[1]
+
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                file_path_without_tex = os.path.join(root, file)
+                file_path_with_tex = os.path.join(root, file + ".tex")
+                if file.endswith(('.tex', '.bib', '.png', '.jpg')):
+                    pass
+                else:
+                     os.rename(file_path_without_tex, file_path_with_tex)
+
+
 
 class CompileLaTeX():
     def __init__(self, base_path):
