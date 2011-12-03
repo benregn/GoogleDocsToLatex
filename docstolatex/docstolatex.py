@@ -103,16 +103,16 @@ class DocsToLaTeX():
                   os.sep + '\n'
 
 
-    def remove_ext_txt(self, path_to_file):
-        path_without_ext = path_to_file[:-4]
-        print '='*50 + '\n' + path_without_ext + '\n' + '='*50
+    def remove_ext_txt(self, file_path):
+        file_path_without_ext = file_path[:-4]
+        print '='*50 + '\n' + file_path_without_ext + '\n' + '='*50
 
         # os.rename does not overwrite, so remove old copy first
-        if os.path.exists(path_without_ext):
-            os.remove(path_without_ext)
-            os.rename(path_to_file, path_without_ext)
+        if os.path.exists(file_path_without_ext):
+            os.remove(file_path_without_ext)
+            os.rename(file_path, file_path_without_ext)
         else:
-            os.rename(path_to_file, path_without_ext)
+            os.rename(file_path, file_path_without_ext)
 
     def check_for_tex_extension(self, path):
 #        print "In check for tex"
