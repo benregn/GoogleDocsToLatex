@@ -11,3 +11,10 @@ class ConfigFileParser:
 
         with open('config.cfg', 'wb') as configfile:
             self.config.write(configfile)
+
+
+    def read_config_file(self):
+        self.config.read('config.cfg')
+
+        self.username = self.config.get('DocsToLatex', 'username')
+        self.folder_name = self.config.get('DocsToLatex', 'folder_name')
