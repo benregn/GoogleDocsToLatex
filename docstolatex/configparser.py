@@ -6,6 +6,10 @@ class ConfigFileParser:
         self.config_filename = filename
 
     def write_config_file(self):
+        """
+        Checks if the file exists, if not it creates the config file and writes in the options
+        without setting them.
+        """
         self.config.add_section('DocsToLatex')
         self.config.set('DocsToLatex', 'username', '')
         self.config.set('DocsToLatex', 'folder_name', '')
@@ -15,6 +19,9 @@ class ConfigFileParser:
 
 
     def read_config_file(self):
+        """
+        Reads in the values from the config file.
+        """
         self.config.read(self.config_filename)
 
         self.username = self.config.get('DocsToLatex', 'username')
