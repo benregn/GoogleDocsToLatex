@@ -186,13 +186,13 @@ def make_directory(file_path):
     print 'make_directory ' + file_path
 
     if not os.path.exists(file_path):
-            try:
-                print 'Attempting to create folder.'
-                os.makedirs(file_path)
-                return True
-            except OSError, e:
-                if e.errno == errno.EEXIST:
-                    pass
+        try:
+            print 'Attempting to create folder.'
+            os.makedirs(file_path)
+            return True
+        except OSError, e:
+            if e.errno == errno.EEXIST:
+                pass
     else:
         print 'Folder existed.'
         return True
