@@ -193,7 +193,6 @@ def make_directory(file_path):
             except OSError, e:
                 if e.errno == errno.EEXIST:
                     pass
-                raise
     else:
         print 'Folder existed.'
         return True
