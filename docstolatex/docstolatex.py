@@ -217,7 +217,12 @@ def main():
 
     dtl.get_folder_list()
     dtl.print_feed(dtl.document_list)
-    dtl.docs_folder = raw_input('Select folder: ')
+
+    if not parse_conf.folder_name:
+        dtl.docs_folder = raw_input('Select folder: ')
+    else:
+        dtl.docs_folder = parse_conf.folder_name
+
     dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
     print 'File path to save to is: ' + dtl.base_path
     dtl.find_selected_folder()
