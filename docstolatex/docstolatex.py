@@ -3,7 +3,7 @@ import os
 import errno
 import subprocess
 import shutil
-import configparser
+import configfileparser
 from getpass import getpass
 
 
@@ -201,7 +201,7 @@ def make_directory(file_path):
 
 def main():
     dtl = DocsToLaTeX()
-    parse_conf = configparser.ConfigFileParser('config.cfg')
+    parse_conf = configfileparser.ConfigFileParser('config.cfg')
     parse_conf.write_config_file()
     parse_conf.read_config_file()
 
