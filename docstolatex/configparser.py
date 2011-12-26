@@ -1,3 +1,4 @@
+import os
 import ConfigParser
 
 class ConfigFileParser:
@@ -14,8 +15,9 @@ class ConfigFileParser:
         self.config.set('DocsToLatex', 'username', '')
         self.config.set('DocsToLatex', 'folder_name', '')
 
-        with open(self.config_filename, 'wb') as configfile:
-            self.config.write(configfile)
+        if not os.path.isfile(self.config_filename):
+            with open(self.config_filename, 'wb') as configfile:
+                self.config.write(configfile)
 
 
     def read_config_file(self):
