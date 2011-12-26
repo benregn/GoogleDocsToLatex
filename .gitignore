@@ -3,3 +3,5 @@ snippet
 *.pyc
 *.cfg
 unicode_search.py
+#tex files just used for trying out stuff
+*.tex
