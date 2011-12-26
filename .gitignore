@@ -1,2 +1,5 @@
 .idea
 snippet
+*.pyc
+*.cfg
+unicode_search.py
