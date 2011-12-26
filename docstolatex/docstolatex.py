@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gdata.docs import client
 import os
 import errno
@@ -156,6 +157,26 @@ class DocsToLaTeX():
 class CompileLaTeX():
     def __init__(self, base_path):
         self.base_path = base_path
+        #Google Docs style as key and LaTeX style as values
+        self.docs_latex_quotes = {'‘': '`', '’': '\'', '“': '``', '”': '\'\''}
+
+
+    def replace_quote_characters(self):
+        for root, dirs, files in os.walk(self.base_path):
+            for file in files:
+                if file.endswith('.tex'):
+                    current_file = open(file, "r")
+                    contents = current_file.read()
+                    print contents
+                    for i, k in self.docs_latex_quotes.iteritems():
+                        contents = contents.replace(i, k)
+                    print contents
+                    current_file.close()
+
+                    current_file = open(file, "w")
+                    current_file.write(contents)
+                    current_file.close()
+
 
     def compile_to_latex(self, filename):
         file_path = self.find_file_to_compile(filename, self.base_path)
@@ -251,11 +272,12 @@ def main():
     dtl.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
-    main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
-    if main_latex_file:
-        comp_latex.compile_to_latex(main_latex_file)
-    else:
-        print 'No file name entered.'
+    comp_latex.replace_quote_characters()
+#    main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
+#    if main_latex_file:
+#        comp_latex.compile_to_latex(main_latex_file)
+#    else:
+#        print 'No file name entered.'
 
 
 if __name__ == '__main__':
