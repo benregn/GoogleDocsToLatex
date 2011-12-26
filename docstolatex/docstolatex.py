@@ -28,10 +28,16 @@ class DocsToLaTeX():
 
 
     def get_folder_list(self):
+        """
+        Gets the user's folder list.
+        """
         self.document_list = self.client.GetDocList(uri='/feeds/default/private/full/-/folder')
 
 
     def find_selected_folder(self):
+        """
+        Finds the folder specified in config file or from user input.
+        """
         for folder in self.document_list.entry:
             if folder.title.text.encode('UTF-8') == self.docs_folder:
                 folder_feed = self.client.GetDocList(uri=folder.content.src)
@@ -40,6 +46,9 @@ class DocsToLaTeX():
 
 
     def download_folder_contents(self, folder_feed):
+        """
+        Sorts out if entries are a folder, a document or miscellaneous file type.
+        """
         self.print_feed(folder_feed)
 
         for entry in folder_feed.entry:
@@ -53,6 +62,10 @@ class DocsToLaTeX():
     
 
     def download_document(self, entry):
+        """
+        Downloads files of Google Documents type and puts them in the
+        correct folders according to Docs collections.
+        """
         current_folder_name = entry.InFolders()[0].title
         document_name = entry.title.text.encode('UTF-8')
         file_ext = '.txt'
@@ -84,6 +97,10 @@ class DocsToLaTeX():
 
 
     def download_file(self, entry):
+        """
+        Downloads files that are not Google Documents and puts them in the
+        correct folders according to Docs collections.
+        """
         current_folder_name = entry.InFolders()[0].title
         document_name = entry.title.text.encode('UTF-8')
 
@@ -105,6 +122,9 @@ class DocsToLaTeX():
 
 
     def remove_ext_txt(self, file_path):
+        """
+        Removes the .txt file extension from Documents.
+        """
         file_path_without_ext = file_path[:-4]
         print '='*50 + '\n' + file_path_without_ext + '\n' + '='*50
 
@@ -116,6 +136,9 @@ class DocsToLaTeX():
             os.rename(file_path, file_path_without_ext)
 
     def check_for_tex_extension(self, path):
+        """
+        Checks if Documents have .tex extension, adds it if it doesn't.
+        """
 #        print "In check for tex"
 #        print "os.path.splitext(file_path)[1]" + os.path.splitext(file_path)[1]
 
