@@ -3,6 +3,7 @@ import os
 import errno
 import subprocess
 import shutil
+import configparser
 from getpass import getpass
 
 
@@ -200,7 +201,16 @@ def make_directory(file_path):
 
 def main():
     dtl = DocsToLaTeX()
-    username = raw_input('Enter your username: ')
+    parse_conf = configparser.ConfigFileParser('config.cfg')
+    parse_conf.write_config_file()
+    parse_conf.read_config_file()
+
+    if not parse_conf.username:
+        username = raw_input('Enter your username: ')
+    else:
+        username = parse_conf.username
+        print 'Logging in as {}'.format(username)
+
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
     dtl.client.client_login(username, password, dtl.client.source)
@@ -211,6 +221,7 @@ def main():
     dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
     print 'File path to save to is: ' + dtl.base_path
     dtl.find_selected_folder()
+    dtl.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
     main_latex_file = raw_input('Enter the name of the main LaTeX file: ')
