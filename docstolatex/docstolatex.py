@@ -123,10 +123,10 @@ class DocsToLaTeX():
             for file in files:
                 file_path_without_tex = os.path.join(root, file)
                 file_path_with_tex = os.path.join(root, file + ".tex")
-                if file.endswith(('.tex', '.bib', '.png', '.jpg')):
-                    pass
+                if not os.path.splitext(file)[1]: #if file extension is empty
+                    os.rename(file_path_without_tex, file_path_with_tex)
                 else:
-                     os.rename(file_path_without_tex, file_path_with_tex)
+                     pass
 
 
 
