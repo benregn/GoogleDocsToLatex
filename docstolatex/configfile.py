@@ -1,7 +1,7 @@
 import os
 import ConfigParser
 
-class ConfigFileParser:
+class ConfigFile:
     def __init__(self, filename):
         self.config = ConfigParser.SafeConfigParser(allow_no_value=True)
         self.config_filename = filename

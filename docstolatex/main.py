@@ -1,13 +1,13 @@
 import os
 from docstolatex import DocsToLaTeX, CompileLaTeX
-from configfileparser import ConfigFileParser
+from configfile import ConfigFile
 
 
 
 
 def main():
     dtl = DocsToLaTeX()
-    parse_conf = ConfigFileParser('config.cfg')
+    parse_conf = ConfigFile('config.cfg')
     parse_conf.write_config_file()
     parse_conf.read_config_file()
 
