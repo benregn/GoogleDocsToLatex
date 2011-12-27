@@ -171,7 +171,11 @@ class DocsToLaTeX():
                 file_path_without_tex = os.path.join(root, file)
                 file_path_with_tex = os.path.join(root, file + ".tex")
                 if not os.path.splitext(file)[1]: #if file extension is empty
-                    os.rename(file_path_without_tex, file_path_with_tex)
+                    if os.path.exists(file_path_with_tex):
+                        os.remove(file_path_with_tex)
+                        os.rename(file_path_without_tex, file_path_with_tex)
+                    else:
+                        os.rename(file_path_without_tex, file_path_with_tex)
                 else:
                     pass
 
