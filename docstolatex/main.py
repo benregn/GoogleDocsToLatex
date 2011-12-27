@@ -6,7 +6,6 @@ from configfile import ConfigFile
 
 
 def main():
-    dtl = DocsToLaTeX()
     parse_conf = ConfigFile('config.cfg')
     parse_conf.write_config_file()
     parse_conf.read_config_file()
@@ -19,7 +18,8 @@ def main():
 
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
-    dtl.docs_client.client_login(username, password, dtl.docs_client.source)
+
+    dtl = DocsToLaTeX(username, password)
 
     dtl.get_folder_list()
     dtl.print_feed(dtl.document_list)

@@ -8,12 +8,29 @@ from getpass import getpass
 
 
 class DocsToLaTeX():
-    docs_client = client.DocsClient(
-        source='benregn-GoogleDocsToLaTeX-v1')
+    def __init__(self, username, password):
+        """
+        Constructor for DocsToLaTeX.
+
+        Takes an username or email and a password to a Google account
+        to login to Google Docs.
+
+        Args:
+              username: [string] The email or username of the account
+                        to use for the sample.
+              password: [string] The password corresponding to the
+                        account specified by the username parameter.
+        """
+        docs_client = client.DocsClient(
+                source='benregn-GoogleDocsToLaTeX-v1')
+        docs_client.client_login(username, password, docs_client.source)
+
+
     document_list = None
     docs_folder = ''
     base_path = os.getcwd()
     download_images = None
+
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
