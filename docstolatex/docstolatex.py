@@ -8,7 +8,8 @@ from getpass import getpass
 
 
 class DocsToLaTeX():
-    client = client.DocsClient(source='benregn-GoogleDocsToLaTeX-v1')
+    docs_client = client.DocsClient(
+        source='benregn-GoogleDocsToLaTeX-v1')
     document_list = None
     docs_folder = ''
     base_path = os.getcwd()
@@ -31,7 +32,8 @@ class DocsToLaTeX():
         """
         Gets the user's folder list.
         """
-        self.document_list = self.client.GetDocList(uri='/feeds/default/private/full/-/folder')
+        self.document_list = self.docs_client.GetDocList(
+            uri='/feeds/default/private/full/-/folder')
 
 
     def find_selected_folder(self):
@@ -40,7 +42,8 @@ class DocsToLaTeX():
         """
         for folder in self.document_list.entry:
             if folder.title.text.encode('UTF-8') == self.docs_folder:
-                folder_feed = self.client.GetDocList(uri=folder.content.src)
+                folder_feed = self.docs_client.GetDocList(
+                    uri=folder.content.src)
                 print 'Contents of ' + self.docs_folder + ':'
                 self.download_folder_contents(folder_feed)
 
@@ -54,7 +57,8 @@ class DocsToLaTeX():
         for entry in folder_feed.entry:
             if entry.GetDocumentType() == 'folder':
                 print '\n' + entry.title.text.encode('UTF-8')
-                self.download_folder_contents(self.client.GetDocList(uri=entry.content.src))
+                self.download_folder_contents(self.docs_client.GetDocList(
+                    uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
                 self.download_document(entry)
             else:
@@ -81,7 +85,7 @@ class DocsToLaTeX():
             print 'Document is in the base folder.'
             file_path = os.path.join(self.base_path, document_name + file_ext)
             if make_directory(file_path):
-                self.client.Export(entry, file_path)
+                self.docs_client.Export(entry, file_path)
             print 'Saved in folder: ' + os.sep + current_folder_name + os.sep \
             + '\n'
         else:
@@ -89,7 +93,7 @@ class DocsToLaTeX():
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name + file_ext)
             if make_directory(file_path):
-                self.client.Export(entry, file_path)
+                self.docs_client.Export(entry, file_path)
             print 'Saved in subfolder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
 
@@ -108,7 +112,7 @@ class DocsToLaTeX():
             print 'File is in the base folder.'
             file_path = os.path.join(self.base_path, document_name)
             if make_directory(file_path):
-                self.client.Download(entry, file_path)
+                self.docs_client.Download(entry, file_path)
             print 'Saved in folder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
         else:
@@ -116,7 +120,7 @@ class DocsToLaTeX():
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name)
             if make_directory(file_path):
-                self.client.Download(entry, file_path)
+                self.docs_client.Download(entry, file_path)
             print 'Saved in subfolder: ' + os.sep + current_folder_name + \
                   os.sep + '\n'
 
@@ -149,7 +153,7 @@ class DocsToLaTeX():
                 if not os.path.splitext(file)[1]: #if file extension is empty
                     os.rename(file_path_without_tex, file_path_with_tex)
                 else:
-                     pass
+                    pass
 
 
 
@@ -211,17 +215,19 @@ class CompileLaTeX():
 
 
     def cleanup_latex(self):
-        LATEX_TEMP_EXT = ('.aux', '.bbl', '.blg', '.log', '.toc', '.lof', '.lot',)
+        latex_temp_extensions = ('.aux', '.bbl', '.blg', '.log', '.toc',
+                          '.lof', '.lot',)
         temp_folder_name = 'temp'
 
         for root, dirs, files in os.walk(self.base_path):
-                for file in files:
-                    if file.endswith(LATEX_TEMP_EXT):
-                        source = os.path.join(root, file)
-                        destination = os.path.join(root, temp_folder_name, file)
-                        if not os.path.exists(destination): # path has to exist before shutil.move
-                            make_directory(destination)
-                        shutil.move(source, destination)
+            for file in files:
+                if file.endswith(latex_temp_extensions):
+                    source = os.path.join(root, file)
+                    destination = os.path.join(root, temp_folder_name, file)
+                    # path has to exist before shutil.move
+                    if not os.path.exists(destination):
+                        make_directory(destination)
+                    shutil.move(source, destination)
 
 
 def make_directory(file_path):

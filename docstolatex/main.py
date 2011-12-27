@@ -19,7 +19,7 @@ def main():
 
     password = raw_input('Enter your password: ')
     #password = getpass('Enter your password: ')
-    dtl.client.client_login(username, password, dtl.client.source)
+    dtl.docs_client.client_login(username, password, dtl.docs_client.source)
 
     dtl.get_folder_list()
     dtl.print_feed(dtl.document_list)

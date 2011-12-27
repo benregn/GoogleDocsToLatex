@@ -5,6 +5,8 @@ class ConfigFile:
     def __init__(self, filename):
         self.config = ConfigParser.SafeConfigParser(allow_no_value=True)
         self.config_filename = filename
+        self.username = ''
+        self.folder_name = ''
 
     def write_config_file(self):
         """
