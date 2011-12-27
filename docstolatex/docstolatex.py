@@ -163,9 +163,11 @@ class CompileLaTeX():
 
     def replace_quote_characters(self):
         for root, dirs, files in os.walk(self.base_path):
+            print root
             for file in files:
-                if file.endswith('.tex'):
-                    current_file = open(file, "r")
+                if file.endswith(('.tex', '.bib',)):
+                    path_to_file = os.path.join(root, file)
+                    current_file = open(path_to_file, "r")
                     contents = current_file.read()
                     print contents
                     for i, k in self.docs_latex_quotes.iteritems():
@@ -173,7 +175,7 @@ class CompileLaTeX():
                     print contents
                     current_file.close()
 
-                    current_file = open(file, "w")
+                    current_file = open(path_to_file, "w")
                     current_file.write(contents)
                     current_file.close()
 
@@ -244,32 +246,32 @@ def make_directory(file_path):
 
 def main():
     dtl = DocsToLaTeX()
-    parse_conf = configfileparser.ConfigFileParser('config.cfg')
-    parse_conf.write_config_file()
-    parse_conf.read_config_file()
-
-    if not parse_conf.username:
-        username = raw_input('Enter your username: ')
-    else:
-        username = parse_conf.username
-        print 'Logging in as {}'.format(username)
-
-    password = raw_input('Enter your password: ')
-    #password = getpass('Enter your password: ')
-    dtl.client.client_login(username, password, dtl.client.source)
-
-    dtl.get_folder_list()
-    dtl.print_feed(dtl.document_list)
-
-    if not parse_conf.folder_name:
-        dtl.docs_folder = raw_input('Select folder: ')
-    else:
-        dtl.docs_folder = parse_conf.folder_name
-
-    dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
-    print 'File path to save to is: ' + dtl.base_path
-    dtl.find_selected_folder()
-    dtl.check_for_tex_extension(dtl.base_path)
+#    parse_conf = configfileparser.ConfigFileParser('config.cfg')
+#    parse_conf.write_config_file()
+#    parse_conf.read_config_file()
+#
+#    if not parse_conf.username:
+#        username = raw_input('Enter your username: ')
+#    else:
+#        username = parse_conf.username
+#        print 'Logging in as {}'.format(username)
+#
+#    password = raw_input('Enter your password: ')
+#    #password = getpass('Enter your password: ')
+#    dtl.client.client_login(username, password, dtl.client.source)
+#
+#    dtl.get_folder_list()
+#    dtl.print_feed(dtl.document_list)
+#
+#    if not parse_conf.folder_name:
+#        dtl.docs_folder = raw_input('Select folder: ')
+#    else:
+#        dtl.docs_folder = parse_conf.folder_name
+#
+#    dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
+#    print 'File path to save to is: ' + dtl.base_path
+#    dtl.find_selected_folder()
+#    dtl.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
     comp_latex.replace_quote_characters()
