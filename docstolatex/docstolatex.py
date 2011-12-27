@@ -21,9 +21,9 @@ class DocsToLaTeX():
               password: [string] The password corresponding to the
                         account specified by the username parameter.
         """
-        docs_client = client.DocsClient(
+        self.docs_client = client.DocsClient(
                 source='benregn-GoogleDocsToLaTeX-v1')
-        docs_client.client_login(username, password, docs_client.source)
+        self.docs_client.client_login(username, password, self.docs_client.source)
 
         self.document_list = None
         self.docs_folder = ''
