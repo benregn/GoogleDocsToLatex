@@ -13,6 +13,7 @@ class DocsToLaTeX():
     document_list = None
     docs_folder = ''
     base_path = os.getcwd()
+    download_images = None
 
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
@@ -62,7 +63,10 @@ class DocsToLaTeX():
             elif entry.GetDocumentType() == 'document':
                 self.download_document(entry)
             else:
-                self.download_file(entry)
+                if not self.download_images and 'image' in entry.GetDocumentType():
+                    pass
+                else:
+                    self.download_file(entry)
     
 
     def download_document(self, entry):

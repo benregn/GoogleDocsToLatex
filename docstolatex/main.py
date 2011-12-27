@@ -29,6 +29,12 @@ def main():
     else:
         dtl.docs_folder = parse_conf.folder_name
 
+    download_images = raw_input('Download images? (y = yes, defaults to no) ')
+    if download_images.lower() == 'y':
+        dtl.download_images = True
+    else:
+        dtl.download_images = False
+
     dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
     print 'File path to save to is: ' + dtl.base_path
     dtl.find_selected_folder()
