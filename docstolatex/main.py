@@ -20,6 +20,7 @@ def main():
     #password = getpass('Enter your password: ')
 
     dtl = DocsToLaTeX(username, password)
+    dtl.verbose = parse_conf.verbose
 
     dtl.get_folder_list()
 

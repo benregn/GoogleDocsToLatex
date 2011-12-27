@@ -29,6 +29,7 @@ class DocsToLaTeX():
         self.docs_folder = ''
         self.base_path = os.getcwd()
         self.download_images = None
+        self.verbose = False
 
 
     def print_feed(self, feed):
@@ -61,7 +62,9 @@ class DocsToLaTeX():
             if folder.title.text.encode('UTF-8') == self.docs_folder:
                 folder_feed = self.docs_client.GetDocList(
                     uri=folder.content.src)
-                print 'Contents of ' + self.docs_folder + ':'
+                if self.verbose:
+                    print 'Contents of ' + self.docs_folder + ':'
+
                 self.download_folder_contents(folder_feed)
 
 
@@ -69,11 +72,13 @@ class DocsToLaTeX():
         """
         Sorts out if entries are a folder, a document or miscellaneous file type.
         """
-        self.print_feed(folder_feed)
+        if self.verbose:
+            self.print_feed(folder_feed)
 
         for entry in folder_feed.entry:
             if entry.GetDocumentType() == 'folder':
-                print '\n' + entry.title.text.encode('UTF-8')
+                if self.verbose:
+                    print '\n' + entry.title.text.encode('UTF-8')
                 self.download_folder_contents(self.docs_client.GetDocList(
                     uri=entry.content.src))
             elif entry.GetDocumentType() == 'document':
@@ -94,28 +99,24 @@ class DocsToLaTeX():
         document_name = entry.title.text.encode('UTF-8')
         file_ext = '.txt'
 
-        print 'doc'
-        print 'entry.InFolders()[0].title: ' + current_folder_name
-        print 'docs_folder: ' + self.docs_folder
-        print 'document_name: ' + document_name
+        print '=' * 50
+        print 'Document name: ' + document_name
 
         # if document is in the root collection, then it is
         # saved in the root
         if current_folder_name == self.docs_folder:
-            print 'Document is in the base folder.'
             file_path = os.path.join(self.base_path, document_name + file_ext)
             if make_directory(file_path):
                 self.docs_client.Export(entry, file_path)
-            print 'Saved in folder: ' + os.sep + current_folder_name + os.sep \
-            + '\n'
+            print 'Saved in the base folder (' + os.sep + current_folder_name + os.sep \
+            + ')\n'
         else:
-            print 'Document is in ' + current_folder_name
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name + file_ext)
             if make_directory(file_path):
                 self.docs_client.Export(entry, file_path)
-            print 'Saved in subfolder: ' + os.sep + current_folder_name + \
-                  os.sep + '\n'
+            print 'Saved in subfolder (' + os.sep + current_folder_name + \
+                  os.sep + ')\n'
 
         self.remove_ext_txt(file_path)
 
@@ -128,21 +129,22 @@ class DocsToLaTeX():
         current_folder_name = entry.InFolders()[0].title
         document_name = entry.title.text.encode('UTF-8')
 
+        print '=' * 50 + '\n'
+        print 'File name: ' + document_name
+
         if current_folder_name == self.docs_folder:
-            print 'File is in the base folder.'
             file_path = os.path.join(self.base_path, document_name)
             if make_directory(file_path):
                 self.docs_client.Download(entry, file_path)
-            print 'Saved in folder: ' + os.sep + current_folder_name + \
-                  os.sep + '\n'
+            print 'Saved in the base folder (' + os.sep + current_folder_name + \
+                  os.sep + ')\n'
         else:
-            print 'File is in ' + current_folder_name
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name)
             if make_directory(file_path):
                 self.docs_client.Download(entry, file_path)
-            print 'Saved in subfolder: ' + os.sep + current_folder_name + \
-                  os.sep + '\n'
+            print 'Saved in subfolder (' + os.sep + current_folder_name + \
+                  os.sep + ')\n'
 
 
     def remove_ext_txt(self, file_path):
@@ -150,7 +152,6 @@ class DocsToLaTeX():
         Removes the .txt file extension from Documents.
         """
         file_path_without_ext = file_path[:-4]
-        print '='*50 + '\n' + file_path_without_ext + '\n' + '='*50
 
         # os.rename does not overwrite, so remove old copy first
         if os.path.exists(file_path_without_ext):
@@ -163,9 +164,6 @@ class DocsToLaTeX():
         """
         Checks if Documents have .tex extension, adds it if it doesn't.
         """
-#        print "In check for tex"
-#        print "os.path.splitext(file_path)[1]" + os.path.splitext(file_path)[1]
-
         for root, dirs, files in os.walk(path):
             for file in files:
                 file_path_without_tex = os.path.join(root, file)
@@ -196,10 +194,8 @@ class CompileLaTeX():
                     path_to_file = os.path.join(root, file)
                     current_file = open(path_to_file, "r")
                     contents = current_file.read()
-                    print contents
                     for i, k in self.docs_latex_quotes.iteritems():
                         contents = contents.replace(i, k)
-                    print contents
                     current_file.close()
 
                     current_file = open(path_to_file, "w")
@@ -209,17 +205,13 @@ class CompileLaTeX():
 
     def compile_to_latex(self, filename):
         file_path = self.find_file_to_compile(filename, self.base_path)
-        print 'compile to latex : file_path ' + file_path
         output_directory = os.path.join(self.base_path)
-        print 'compile to latex : output_directory ' + output_directory
 
         pdflatex = list()
         pdflatex.append('pdflatex')
         pdflatex.append('{}'.format(file_path))
         pdflatex.append('-interaction=nonstopmode')
         pdflatex.append('-output-directory={}'.format(output_directory))
-        print 'compile to latex : pdflatex '
-        print pdflatex
         return_value = subprocess.call(pdflatex)
 
         if return_value == 1:
@@ -232,10 +224,10 @@ class CompileLaTeX():
         for root, dirs, files in os.walk(path):
             for name in files:
                 if filename == name:
-                    print 'file found'
+                    print '{} found'.format(filename)
                     return os.path.join(root, name)
-                else:
-                    print '{} not found'.format(filename)
+
+                print '{} not found'.format(filename)
 
 
     def cleanup_latex(self):
@@ -258,16 +250,13 @@ def make_directory(file_path):
     if os.path.splitext(file_path)[1]:
         file_path = os.path.dirname(file_path)
 
-    print 'make_directory ' + file_path
-
     if not os.path.exists(file_path):
         try:
-            print 'Attempting to create folder.'
             os.makedirs(file_path)
             return True
         except OSError, e:
             if e.errno == errno.EEXIST:
                 pass
     else:
-        print 'Folder existed.'
+        #folder existed
         return True

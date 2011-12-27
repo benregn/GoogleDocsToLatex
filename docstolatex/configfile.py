@@ -7,6 +7,7 @@ class ConfigFile:
         self.config_filename = filename
         self.username = ''
         self.folder_name = ''
+        self.verbose = None
 
     def write_config_file(self):
         """
@@ -16,6 +17,8 @@ class ConfigFile:
         self.config.add_section('DocsToLatex')
         self.config.set('DocsToLatex', 'username', '')
         self.config.set('DocsToLatex', 'folder_name', '')
+        self.config.set('DocsToLatex', '#Has to be set to \'True\' or \'False\'')
+        self.config.set('DocsToLatex', 'verbose_output', 'False')
 
         if not os.path.isfile(self.config_filename):
             with open(self.config_filename, 'wb') as configfile:
@@ -30,3 +33,4 @@ class ConfigFile:
 
         self.username = self.config.get('DocsToLatex', 'username')
         self.folder_name = self.config.get('DocsToLatex', 'folder_name')
+        self.verbose = self.config.getboolean('DocsToLatex', 'verbose_output')
