@@ -25,11 +25,10 @@ class DocsToLaTeX():
                 source='benregn-GoogleDocsToLaTeX-v1')
         docs_client.client_login(username, password, docs_client.source)
 
-
-    document_list = None
-    docs_folder = ''
-    base_path = os.getcwd()
-    download_images = None
+        self.document_list = None
+        self.docs_folder = ''
+        self.base_path = os.getcwd()
+        self.download_images = None
 
 
     def print_feed(self, feed):
