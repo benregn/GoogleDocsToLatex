@@ -22,9 +22,9 @@ def main():
     dtl = DocsToLaTeX(username, password)
 
     dtl.get_folder_list()
-    dtl.print_feed(dtl.document_list)
 
     if not parse_conf.folder_name:
+        dtl.print_feed(dtl.document_list)
         dtl.docs_folder = raw_input('Select folder: ')
     else:
         dtl.docs_folder = parse_conf.folder_name
