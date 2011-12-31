@@ -57,14 +57,19 @@ class DocsToLaTeX():
     def find_selected_folder(self):
         """
         Finds the folder specified in config file or from user input.
+
+        Returns:
+            Tuple: 0th element: folder name as it is on Docs
+                   1st element: folder feed
         """
         folder_feed = None
         for folder in self.document_list.entry:
-            if folder.title.text.encode('UTF-8') == self.docs_folder:
+            if folder.title.text.encode('UTF-8').lower() == self.docs_folder.lower():
                 if self.verbose:
                     print 'Contents of ' + self.docs_folder + ':'
-                folder_feed = self.docs_client.GetDocList(
-                    uri=folder.content.src)
+                folder_feed = (folder.title.text.encode('UTF-8'),
+                                   self.docs_client.GetDocList(
+                                       uri=folder.content.src))
         return folder_feed
 
 
@@ -96,7 +101,7 @@ class DocsToLaTeX():
         correct folders according to Docs collections.
         """
         current_folder_name = entry.InFolders()[0].title
-        document_name = entry.title.text.encode('UTF-8')
+        document_name = entry.title.text.encode('UTF-8').lower()
         file_ext = '.txt'
 
         print '=' * 50
@@ -104,7 +109,7 @@ class DocsToLaTeX():
 
         # if document is in the root collection, then it is
         # saved in the root
-        if current_folder_name == self.docs_folder:
+        if current_folder_name == self.docs_folder.lower():
             file_path = os.path.join(self.base_path, document_name + file_ext)
             if make_directory(file_path):
                 self.docs_client.Export(entry, file_path)
@@ -127,12 +132,12 @@ class DocsToLaTeX():
         correct folders according to Docs collections.
         """
         current_folder_name = entry.InFolders()[0].title
-        document_name = entry.title.text.encode('UTF-8')
+        document_name = entry.title.text.encode('UTF-8').lower()
 
         print '=' * 50 + '\n'
         print 'File name: ' + document_name
 
-        if current_folder_name == self.docs_folder:
+        if current_folder_name == self.docs_folder.lower():
             file_path = os.path.join(self.base_path, document_name)
             if make_directory(file_path):
                 self.docs_client.Download(entry, file_path)
