@@ -32,9 +32,7 @@ def main():
         dtl.docs_folder = parse_conf.folder_name
 
     docs_folder_feed = dtl.find_selected_folder()
-    if docs_folder_feed:
-        dtl.download_folder_contents(docs_folder_feed)
-    else:
+    if not docs_folder_feed:
         sys.exit("Folder not found")
 
     download_images = raw_input('Download images? (y = yes, defaults to no) ')
@@ -46,6 +44,7 @@ def main():
     dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
     print 'File path to save to is: ' + dtl.base_path
 
+    dtl.download_folder_contents(docs_folder_feed)
     dtl.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
