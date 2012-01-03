@@ -5,3 +5,4 @@ snippet
 unicode_search.py
 #tex files just used for trying out stuff
 *.tex
+*.sublime*
