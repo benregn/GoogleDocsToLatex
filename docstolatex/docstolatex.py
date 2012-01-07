@@ -97,8 +97,8 @@ class DocsToLaTeX():
         Downloads files of Google Documents type and puts them in the
         correct folders according to Docs collections.
         """
-        current_folder_name = entry.InFolders()[0].title
-        document_name = entry.title.text.encode('UTF-8').lower()
+        current_folder_name = entry.InFolders()[0].title.lower()
+        document_name = entry.title.text.encode('UTF-8')
         file_ext = '.txt'
 
         print '=' * 50
@@ -128,8 +128,8 @@ class DocsToLaTeX():
         Downloads files that are not Google Documents and puts them in the
         correct folders according to Docs collections.
         """
-        current_folder_name = entry.InFolders()[0].title
-        document_name = entry.title.text.encode('UTF-8').lower()
+        current_folder_name = entry.InFolders()[0].title.lower()
+        document_name = entry.title.text.encode('UTF-8')
 
         print '=' * 50 + '\n'
         print 'File name: ' + document_name
