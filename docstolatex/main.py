@@ -1,5 +1,6 @@
 import os
 import sys
+from getpass import getpass
 from docstolatex import DocsToLaTeX
 from compilelatex import CompileLaTeX
 from configfile import ConfigFile
@@ -18,8 +19,7 @@ def main():
         username = parse_conf.username
         print 'Logging in as {}'.format(username)
 
-    password = raw_input('Enter your password: ')
-    #password = getpass('Enter your password: ')
+    password = getpass('Enter your password: ')
 
     dtl = DocsToLaTeX(username, password)
     dtl.verbose = parse_conf.verbose

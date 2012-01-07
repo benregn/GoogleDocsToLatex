@@ -1,6 +1,5 @@
 from gdata.docs import client
 import os
-from getpass import getpass
 import utilityfunctions as utilfunc
 
 
