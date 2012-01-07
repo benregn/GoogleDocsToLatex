@@ -1,6 +1,7 @@
 import os
 import sys
-from docstolatex import DocsToLaTeX, CompileLaTeX
+from docstolatex import DocsToLaTeX
+from compilelatex import CompileLaTeX
 from configfile import ConfigFile
 
 
