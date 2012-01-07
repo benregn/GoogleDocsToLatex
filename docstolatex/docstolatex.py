@@ -1,5 +1,5 @@
-from gdata.docs import client
 import os
+from gdata.docs import client
 import utilityfunctions as utilfunc
 
 
@@ -89,7 +89,7 @@ class DocsToLaTeX():
                     pass
                 else:
                     self.download_file(entry)
-    
+
 
     def download_document(self, entry):
         """
