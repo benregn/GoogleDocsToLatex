@@ -11,7 +11,6 @@ class CompileLaTeX():
         #Google Docs style as key and LaTeX style as values
         self.docs_latex_quotes = {'‘': '`', '’': '\'', '“': '``', '”': '\'\''}
 
-
     def replace_quote_characters(self):
         for root, dirs, files in os.walk(self.base_path):
             print root
@@ -27,7 +26,6 @@ class CompileLaTeX():
                     current_file = open(path_to_file, "w")
                     current_file.write(contents)
                     current_file.close()
-
 
     def compile_to_latex(self, filename):
         file_path = self.find_file_to_compile(filename, self.base_path)
@@ -45,7 +43,6 @@ class CompileLaTeX():
         else:
             self.cleanup_latex()
 
-
     def find_file_to_compile(self, filename, path):
         for root, dirs, files in os.walk(path):
             for name in files:
@@ -54,7 +51,6 @@ class CompileLaTeX():
                     return os.path.join(root, name)
 
                 print '{} not found'.format(filename)
-
 
     def cleanup_latex(self):
         latex_temp_extensions = ('.aux', '.bbl', '.blg', '.log', '.toc',

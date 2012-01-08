@@ -27,7 +27,6 @@ class DocsToLaTeX():
         self.download_images = None
         self.verbose = False
 
-
     def print_feed(self, feed):
         """Prints out the contents of a feed to the console."""
         table_format = '    %-30s %-20s %-12s'
@@ -41,14 +40,12 @@ class DocsToLaTeX():
                                       [f.title for f in entry.InFolders()],
                                       entry.GetDocumentType())
 
-
     def get_folder_list(self):
         """
         Gets the user's folder list.
         """
         self.document_list = self.docs_client.GetDocList(
             uri='/feeds/default/private/full/-/folder')
-
 
     def find_selected_folder(self):
         """
@@ -67,7 +64,6 @@ class DocsToLaTeX():
                                    self.docs_client.GetDocList(
                                        uri=folder.content.src))
         return folder_feed
-
 
     def download_folder_contents(self, folder_feed):
         """
@@ -89,7 +85,6 @@ class DocsToLaTeX():
                     pass
                 else:
                     self.download_file(entry)
-
 
     def download_document(self, entry):
         """
@@ -121,7 +116,6 @@ class DocsToLaTeX():
 
         self.remove_ext_txt(file_path)
 
-
     def download_file(self, entry):
         """
         Downloads files that are not Google Documents and puts them in the
@@ -147,7 +141,6 @@ class DocsToLaTeX():
             print 'Saved in subfolder (' + os.sep + current_folder_name + \
                   os.sep + ')\n'
 
-
     def remove_ext_txt(self, file_path):
         """
         Removes the .txt file extension from Documents.
@@ -169,7 +162,7 @@ class DocsToLaTeX():
             for file in files:
                 file_path_without_tex = os.path.join(root, file)
                 file_path_with_tex = os.path.join(root, file + ".tex")
-                if not os.path.splitext(file)[1]: #if file extension is empty
+                if not os.path.splitext(file)[1]:  # if file extension is empty
                     if os.path.exists(file_path_with_tex):
                         os.remove(file_path_with_tex)
                         os.rename(file_path_without_tex, file_path_with_tex)

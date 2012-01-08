@@ -1,6 +1,7 @@
 import os
 import ConfigParser
 
+
 class ConfigFile:
     def __init__(self, filename):
         self.config = ConfigParser.SafeConfigParser(allow_no_value=True)
@@ -23,7 +24,6 @@ class ConfigFile:
         if not os.path.isfile(self.config_filename):
             with open(self.config_filename, 'wb') as configfile:
                 self.config.write(configfile)
-
 
     def read_config_file(self):
         """

@@ -6,8 +6,6 @@ from compilelatex import CompileLaTeX
 from configfile import ConfigFile
 
 
-
-
 def main():
     parse_conf = ConfigFile('config.cfg')
     parse_conf.write_config_file()
