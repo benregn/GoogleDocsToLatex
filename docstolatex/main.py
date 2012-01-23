@@ -1,5 +1,6 @@
 import os
 import sys
+import textwrap
 from getpass import getpass
 from docstolatex import DocsToLaTeX
 from compilelatex import CompileLaTeX
@@ -8,7 +9,6 @@ from configfile import ConfigFile
 
 def main():
     parse_conf = ConfigFile('config.cfg')
-    parse_conf.write_config_file()
     parse_conf.read_config_file()
 
     if not parse_conf.username:
@@ -55,6 +55,16 @@ def main():
         comp_latex.compile_to_latex(main_latex_file)
     else:
         print 'No file name entered.'
+
+    if not parse_conf.config_exists():
+        config_saved = """\
+                        Your username ({}) and chosen folder ({}) have 
+                        been saved in {}""".format(username, dtl.docs_folder, 
+                        os.path.join(dtl.base_path, 'config.cfg'))
+        print textwrap.dedent(config_saved)
+        parse_conf.write_config_file(username=username, folder_name=dtl.docs_folder)
+    else:
+        pass#parse_conf.write_config_file()
 
 
 if __name__ == '__main__':
