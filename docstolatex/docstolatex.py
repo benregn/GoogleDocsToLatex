@@ -52,17 +52,17 @@ class DocsToLaTeX():
         Finds the folder specified in config file or from user input.
 
         Returns:
-            Tuple: 0th element: folder name as it is on Docs
-                   1st element: folder feed
+            dictionary: 'folder name': folder name as it is on Docs
+                        'folder feed': folder feed
         """
         folder_feed = None
         for folder in self.document_list.entry:
             if folder.title.text.encode('UTF-8').lower() == self.docs_folder.lower():
                 if self.verbose:
                     print 'Contents of ' + self.docs_folder + ':'
-                folder_feed = (folder.title.text.encode('UTF-8'),
-                                   self.docs_client.GetDocList(
-                                       uri=folder.content.src))
+                folder_feed = {'folder title': folder.title.text.encode('UTF-8'),
+                                   'folder feed': self.docs_client.GetDocList(
+                                       uri=folder.content.src)}
         return folder_feed
 
     def download_folder_contents(self, folder_feed):

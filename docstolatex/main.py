@@ -34,7 +34,7 @@ def main():
     if not docs_folder_feed:
         sys.exit("Folder not found")
     #if user enters the name in different capitalization then on Docs
-    dtl.docs_folder = docs_folder_feed[0]
+    dtl.docs_folder = docs_folder_feed['folder title']
 
     download_images = raw_input('Download images? (y = yes, defaults to no) ')
     if download_images.lower() == 'y':
@@ -45,7 +45,7 @@ def main():
     dtl.base_path = os.path.join(dtl.base_path, dtl.docs_folder)
     print 'File path to save to is: ' + dtl.base_path
 
-    dtl.download_folder_contents(docs_folder_feed[1])
+    dtl.download_folder_contents(docs_folder_feed['folder feed'])
     dtl.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
