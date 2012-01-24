@@ -36,9 +36,10 @@ class ConfigFile:
             self.verbose = self.config.getboolean('DocsToLatex', 'verbose_output')
 
     def config_exists(self):
+        file_exists = None
         if os.path.isfile(self.config_filename):
-            print 'file exists'
-            return True
+            file_exists = True
         else:
-            print 'file does not exists'
-            return False
+            file_exists = False
+
+        return file_exists
