@@ -63,8 +63,6 @@ def main():
                         os.path.join(dtl.base_path, 'config.cfg'))
         print textwrap.dedent(config_saved)
         parse_conf.write_config_file(username=username, folder_name=dtl.docs_folder)
-    else:
-        pass#parse_conf.write_config_file()
 
 
 if __name__ == '__main__':
