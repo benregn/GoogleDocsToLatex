@@ -1,5 +1,4 @@
 import os
-import sys
 import textwrap
 from getpass import getpass
 from docstolatex import DocsToLaTeX

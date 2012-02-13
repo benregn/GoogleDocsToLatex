@@ -1,4 +1,5 @@
 import os
+import sys
 from gdata.docs import client
 from clint import textui
 import utilityfunctions as utilfunc
@@ -78,7 +79,7 @@ class DocsToLaTeX():
         self.document_list = self.docs_client.GetAllResources(
             uri='/feeds/default/private/full/-/folder')
 
-    def find_selected_folder(self):
+    def find_folder(self):
         """
         Finds the folder specified in config file or from user input.
 
@@ -86,15 +87,19 @@ class DocsToLaTeX():
             dictionary: 'folder name': folder name as it is on Docs
                         'folder feed': folder feed
         """
-        folder_feed = None
-        for folder in self.document_list.entry:
-            if folder.title.text.encode('UTF-8').lower() == self.docs_folder.lower():
+        folder_list = None
+
+        for folder in self.document_list:
+            if folder.title.text.lower() == self.docs_folder.lower():
                 if self.verbose:
                     print 'Contents of ' + self.docs_folder + ':'
-                folder_feed = {'folder title': folder.title.text.encode('UTF-8'),
-                                   'folder feed': self.docs_client.GetDocList(
-                                       uri=folder.content.src)}
-        return folder_feed
+                folder_list = {'folder title': folder.title.text,
+                               'folder feed': self.docs_client.GetAllResources(
+                                              uri=folder.content.src)}
+                break
+        if not folder_list:
+            sys.exit("Folder not found")
+        return folder_list
 
     def download_folder_contents(self, folder_feed):
         """
