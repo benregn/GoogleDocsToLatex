@@ -75,7 +75,7 @@ class DocsToLaTeX():
         """
         Gets the user's folder list.
         """
-        self.document_list = self.docs_client.GetDocList(
+        self.document_list = self.docs_client.GetAllResources(
             uri='/feeds/default/private/full/-/folder')
 
     def find_selected_folder(self):
