@@ -39,7 +39,7 @@ class DocsToLaTeX():
         textui.puts(textui.columns(['Title', self.COLUMN_WIDTH], 
                                    ['Collections', self.COLUMN_WIDTH],
                                    ['Type', self.COLUMN_WIDTH]))
-        for resource in resource_feed:
+        for resource in resources_list:
             self.print_resource(resource)
 
     def print_resource(self, resource):
