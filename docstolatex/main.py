@@ -7,6 +7,22 @@ from compilelatex import CompileLaTeX
 from configfile import ConfigFile
 
 
+def get_folder_name(dtl, parse_conf):
+    """
+    Check if folder name is defined in the config file. Otherwise print folder
+    list and ask for user input.
+
+    Returns:
+        String
+    """
+    folder_name = ''
+    if parse_conf.folder_name:
+        folder_name = parse_conf.folder_name
+    else:
+        dtl.print_feed(dtl.document_list)
+        folder_name = raw_input('Select folder: ')
+    return folder_name
+
 def main():
     parse_conf = ConfigFile('config.cfg')
     parse_conf.read_config_file()
@@ -24,16 +40,12 @@ def main():
 
     dtl.get_folder_list()
 
-    if not parse_conf.folder_name:
-        dtl.print_feed(dtl.document_list)
-        dtl.docs_folder = raw_input('Select folder: ')
-    else:
-        dtl.docs_folder = parse_conf.folder_name
+    dtl.docs_folder = get_folder_name(dtl, parse_conf)
 
-    docs_folder_feed = dtl.find_selected_folder()
-    if not docs_folder_feed:
-        sys.exit("Folder not found")
+    docs_folder_feed = dtl.find_folder()
+
     #if user enters the name in different capitalization then on Docs
+    #then reset docs_folder to Docs version
     dtl.docs_folder = docs_folder_feed['folder title']
 
     download_images = raw_input('Download images? (y = yes, defaults to no) ')
