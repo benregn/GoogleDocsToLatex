@@ -1,5 +1,6 @@
 import os
 from gdata.docs import client
+from clint import textui
 import utilityfunctions as utilfunc
 
 
@@ -24,21 +25,51 @@ class DocsToLaTeX():
         self.document_list = None
         self.docs_folder = ''
         self.base_path = os.getcwd()
+        self.COLUMN_WIDTH = 15
         self.download_images = None
         self.verbose = False
 
-    def print_feed(self, feed):
-        """Prints out the contents of a feed to the console."""
-        table_format = '    %-30s %-20s %-12s'
-        print '\n'
-        if not feed.entry:
-            print 'No entries in feed.\n'
-        else:
-            print table_format % ('TITLE', 'PARENT', 'TYPE')
-            for entry in feed.entry:
-                print table_format % (entry.title.text.encode('UTF-8'),
-                                      [f.title for f in entry.InFolders()],
-                                      entry.GetDocumentType())
+    def print_feed(self, resources_list):
+        """
+        Prints out the contents of a feed to the console.
+
+        Args:
+            resources_list: A list of Resource objects
+        """
+        textui.puts(textui.columns(['Title', self.COLUMN_WIDTH], 
+                                   ['Collections', self.COLUMN_WIDTH],
+                                   ['Type', self.COLUMN_WIDTH]))
+        for resource in resource_feed:
+            self.print_resource(resource)
+
+    def print_resource(self, resource):
+        """
+        Prints out resource's title, what collections it is in and what type it
+        is.
+
+        Args:
+            resource: A Resource object
+        """
+        textui.puts(textui.columns([resource.title.text, self.COLUMN_WIDTH],
+                                   [self.get_resource_folder_list(resource), 
+                                   self.COLUMN_WIDTH],
+                                   [resource.GetResourceType(), 
+                                   self.COLUMN_WIDTH]))
+
+    def get_resource_folder_list(self, resource):
+        """
+        Formats the list of folders that the resource belongs to into a string.
+
+        Args:
+            resource: A Resource object
+
+        Returns:
+            String
+        """
+        collections = resource.InCollections()
+        collections_as_string = ', '.join(c.title for c in collections)
+
+        return '[' + collections_as_string + ']'
 
     def get_folder_list(self):
         """
