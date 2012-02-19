@@ -95,7 +95,7 @@ class DocsToLaTeX():
         for folder in self.document_list:
             if folder.title.text.lower() == self.docs_folder.lower():
                 if self.verbose:
-                    print 'Contents of ' + self.docs_folder + ':'
+                    print 'Contents of {}{}'.format(self.docs_folder, ':')
                 folder_list = {'folder title': folder.title.text,
                                'folder feed': self.docs_client.GetAllResources(
                                               uri=folder.content.src)}
@@ -146,16 +146,16 @@ class DocsToLaTeX():
             if utilfunc.make_directory(file_path):
                 self.docs_client.DownloadResource(resource, file_path,
                                                     extra_params)
-            print 'Saved in the base folder (' + os.sep + current_folder \
-            + os.sep + ')\n'
+            print 'Saved in the base folder ({0}{1}{0})\n'.format(os.sep,
+                                                                current_folder)
         else:
             file_path = os.path.join(self.base_path, current_folder,
                                      document_name + file_ext)
             if utilfunc.make_directory(file_path):
                 self.docs_client.DownloadResource(resource, file_path,
                                                     extra_params)
-            print 'Saved in subfolder (' + os.sep + current_folder + \
-                  os.sep + ')\n'
+            print 'Saved in subfolder ({0}{1}{0})\n'.format(os.sep,
+                                                            current_folder)
 
         self.remove_ext_txt(file_path)
 
