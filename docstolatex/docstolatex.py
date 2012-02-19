@@ -103,26 +103,26 @@ class DocsToLaTeX():
             sys.exit("Folder not found")
         return folder_list
 
-    def download_folder_contents(self, folder_feed):
+    def download_folder_contents(self, folder_list):
         """
         Sorts out if entries are a folder, a document or miscellaneous file type.
         """
         if self.verbose:
-            self.print_feed(folder_feed)
+            self.print_feed(folder_list)
 
-        for entry in folder_feed.entry:
-            if entry.GetDocumentType() == 'folder':
+        for resource in folder_list:
+            if resource.GetResourceType() == 'folder':
                 if self.verbose:
-                    print '\n' + entry.title.text.encode('UTF-8')
-                self.download_folder_contents(self.docs_client.GetDocList(
-                    uri=entry.content.src))
-            elif entry.GetDocumentType() == 'document':
-                self.download_document(entry)
+                    print '\n' + resource.title.text
+                self.download_folder_contents(self.docs_client.GetAllResources(
+                    uri=resource.content.src))
+            elif resource.GetResourceType() == 'document':
+                self.download_document(resource)
             else:
-                if not self.download_images and 'image' in entry.GetDocumentType():
+                if not self.download_images and 'image' in resource.GetResourceType():
                     pass
                 else:
-                    self.download_file(entry)
+                    self.download_file(resource)
 
     def download_document(self, entry):
         """
