@@ -21,7 +21,8 @@ class DocsToLaTeX():
         """
         self.docs_client = client.DocsClient(
                 source='benregn-GoogleDocsToLaTeX-v1')
-        self.docs_client.client_login(username, password, self.docs_client.source)
+        self.docs_client.client_login(username, password,
+                                      self.docs_client.source)
 
         self.document_list = None
         self.docs_folder = ''
@@ -38,7 +39,7 @@ class DocsToLaTeX():
         Args:
             resources_list: A list of Resource objects
         """
-        textui.puts(textui.columns(['Title', self.DOUBLE_COLUMN_WIDTH], 
+        textui.puts(textui.columns(['Title', self.DOUBLE_COLUMN_WIDTH],
                                    ['Collections', self.DOUBLE_COLUMN_WIDTH],
                                    ['Type', self.COLUMN_WIDTH]))
         for resource in resources_list:
@@ -52,11 +53,11 @@ class DocsToLaTeX():
         Args:
             resource: A Resource object
         """
-        textui.puts(textui.columns([resource.title.text.encode('utf-8'), 
+        textui.puts(textui.columns([resource.title.text.encode('utf-8'),
                                    self.DOUBLE_COLUMN_WIDTH],
-                                   [self.get_resource_folder_list(resource), 
+                                   [self.get_resource_folder_list(resource),
                                    self.DOUBLE_COLUMN_WIDTH],
-                                   [resource.GetResourceType(), 
+                                   [resource.GetResourceType(),
                                    self.COLUMN_WIDTH]))
 
     def get_resource_folder_list(self, resource):
@@ -105,7 +106,8 @@ class DocsToLaTeX():
 
     def download_folder_contents(self, folder_list):
         """
-        Sorts out if entries are a folder, a document or miscellaneous file type.
+        Sorts out if entries are a folder, a document or miscellaneous file
+        type.
         """
         if self.verbose:
             self.print_feed(folder_list)
@@ -119,7 +121,8 @@ class DocsToLaTeX():
             elif resource.GetResourceType() == 'document':
                 self.download_document(resource)
             else:
-                if not self.download_images and 'image' in resource.GetResourceType():
+                if (not self.download_images and
+                'image' in resource.GetResourceType()):
                     pass
                 else:
                     self.download_file(resource)
@@ -142,8 +145,8 @@ class DocsToLaTeX():
             file_path = os.path.join(self.base_path, document_name + file_ext)
             if utilfunc.make_directory(file_path):
                 self.docs_client.Export(entry, file_path)
-            print 'Saved in the base folder (' + os.sep + current_folder_name + os.sep \
-            + ')\n'
+            print 'Saved in the base folder (' + os.sep + current_folder_name
+            + os.sep + ')\n'
         else:
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name + file_ext)
@@ -169,8 +172,8 @@ class DocsToLaTeX():
             file_path = os.path.join(self.base_path, document_name)
             if utilfunc.make_directory(file_path):
                 self.docs_client.Download(entry, file_path)
-            print 'Saved in the base folder (' + os.sep + current_folder_name + \
-                  os.sep + ')\n'
+            print 'Saved in the base folder (' + os.sep + current_folder_name \
+                    + os.sep + ')\n'
         else:
             file_path = os.path.join(self.base_path, current_folder_name,
                                      document_name)
