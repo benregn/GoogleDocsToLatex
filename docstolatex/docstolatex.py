@@ -113,16 +113,16 @@ class DocsToLaTeX():
             self.print_feed(folder_list)
 
         for resource in folder_list:
-            if resource.GetResourceType() == 'folder':
+            resource_type = resource.GetResourceType()
+            if resource_type == 'folder':
                 if self.verbose:
                     print '\n' + resource.title.text
                 self.download_folder_contents(self.docs_client.GetAllResources(
                     uri=resource.content.src))
-            elif resource.GetResourceType() == 'document':
+            elif resource_type == 'document':
                 self.download_document(resource)
             else:
-                if (not self.download_images and
-                'image' in resource.GetResourceType()):
+                if not self.download_images and 'image' in resource_type:
                     pass
                 else:
                     self.download_file(resource)
