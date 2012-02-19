@@ -4,6 +4,7 @@ from getpass import getpass
 from docstolatex import DocsToLaTeX
 from compilelatex import CompileLaTeX
 from configfile import ConfigFile
+import utilityfunctions as utilfunc
 
 
 def get_folder_name(dtl, parse_conf):
@@ -57,7 +58,7 @@ def main():
     print 'File path to save to is: ' + dtl.base_path
 
     dtl.download_folder_contents(docs_folder_feed['folder feed'])
-    dtl.check_for_tex_extension(dtl.base_path)
+    utilfunc.check_for_tex_extension(dtl.base_path)
 
     comp_latex = CompileLaTeX(dtl.base_path)
     comp_latex.replace_quote_characters()
@@ -69,8 +70,8 @@ def main():
 
     if not parse_conf.config_exists():
         config_saved = """\
-                        Your username ({}) and chosen folder ({}) have 
-                        been saved in {}""".format(username, dtl.docs_folder, 
+                        Your username ({}) and chosen folder ({}) have
+                        been saved in {}""".format(username, dtl.docs_folder,
                         os.path.join(dtl.base_path, 'config.cfg'))
         print textwrap.dedent(config_saved)
         parse_conf.write_config_file(username=username, folder_name=dtl.docs_folder)
