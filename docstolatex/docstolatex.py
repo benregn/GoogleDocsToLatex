@@ -120,20 +120,20 @@ class DocsToLaTeX():
                 self.download_folder_contents(self.docs_client.GetAllResources(
                     uri=resource.content.src))
             elif resource_type == 'document':
-                self.download_document(resource)
+                self.download_resource(resource, {'exportFormat': 'txt'})
             else:
                 if not self.download_images and 'image' in resource_type:
                     pass
                 else:
-                    self.download_file(resource)
+                    self.download_resource(resource)
 
-    def download_document(self, entry):
+    def download_resource(self, resource, extra_params=None):
         """
         Downloads files of Google Documents type and puts them in the
         correct folders according to Docs collections.
         """
-        current_folder_name = entry.InFolders()[0].title.lower()
-        document_name = entry.title.text.encode('UTF-8')
+        current_folder = resource.InCollections()[0].title.encode('UTF-8')
+        document_name = resource.title.text.encode('UTF-8')
         file_ext = '.txt'
 
         print '=' * 50
@@ -141,46 +141,23 @@ class DocsToLaTeX():
 
         # if document is in the root collection, then it is
         # saved in the root
-        if current_folder_name == self.docs_folder.lower():
+        if current_folder.lower() == self.docs_folder.lower():
             file_path = os.path.join(self.base_path, document_name + file_ext)
             if utilfunc.make_directory(file_path):
-                self.docs_client.Export(entry, file_path)
-            print 'Saved in the base folder (' + os.sep + current_folder_name
+                self.docs_client.DownloadResource(resource, file_path,
+                                                    extra_params)
+            print 'Saved in the base folder (' + os.sep + current_folder \
             + os.sep + ')\n'
         else:
-            file_path = os.path.join(self.base_path, current_folder_name,
+            file_path = os.path.join(self.base_path, current_folder,
                                      document_name + file_ext)
             if utilfunc.make_directory(file_path):
-                self.docs_client.Export(entry, file_path)
-            print 'Saved in subfolder (' + os.sep + current_folder_name + \
+                self.docs_client.DownloadResource(resource, file_path,
+                                                    extra_params)
+            print 'Saved in subfolder (' + os.sep + current_folder + \
                   os.sep + ')\n'
 
         self.remove_ext_txt(file_path)
-
-    def download_file(self, entry):
-        """
-        Downloads files that are not Google Documents and puts them in the
-        correct folders according to Docs collections.
-        """
-        current_folder_name = entry.InFolders()[0].title.lower()
-        document_name = entry.title.text.encode('UTF-8')
-
-        print '=' * 50 + '\n'
-        print 'File name: ' + document_name
-
-        if current_folder_name == self.docs_folder.lower():
-            file_path = os.path.join(self.base_path, document_name)
-            if utilfunc.make_directory(file_path):
-                self.docs_client.Download(entry, file_path)
-            print 'Saved in the base folder (' + os.sep + current_folder_name \
-                    + os.sep + ')\n'
-        else:
-            file_path = os.path.join(self.base_path, current_folder_name,
-                                     document_name)
-            if utilfunc.make_directory(file_path):
-                self.docs_client.Download(entry, file_path)
-            print 'Saved in subfolder (' + os.sep + current_folder_name + \
-                  os.sep + ')\n'
 
     def remove_ext_txt(self, file_path):
         """
