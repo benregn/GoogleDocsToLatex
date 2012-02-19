@@ -51,7 +51,8 @@ class DocsToLaTeX():
         Args:
             resource: A Resource object
         """
-        textui.puts(textui.columns([resource.title.text, self.COLUMN_WIDTH],
+        textui.puts(textui.columns([resource.title.text.encode('utf-8'), 
+                                   self.COLUMN_WIDTH],
                                    [self.get_resource_folder_list(resource), 
                                    self.COLUMN_WIDTH],
                                    [resource.GetResourceType(), 
