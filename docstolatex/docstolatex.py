@@ -27,6 +27,7 @@ class DocsToLaTeX():
         self.docs_folder = ''
         self.base_path = os.getcwd()
         self.COLUMN_WIDTH = 15
+        self.DOUBLE_COLUMN_WIDTH = self.COLUMN_WIDTH * 2
         self.download_images = None
         self.verbose = False
 
@@ -37,8 +38,8 @@ class DocsToLaTeX():
         Args:
             resources_list: A list of Resource objects
         """
-        textui.puts(textui.columns(['Title', self.COLUMN_WIDTH], 
-                                   ['Collections', self.COLUMN_WIDTH],
+        textui.puts(textui.columns(['Title', self.DOUBLE_COLUMN_WIDTH], 
+                                   ['Collections', self.DOUBLE_COLUMN_WIDTH],
                                    ['Type', self.COLUMN_WIDTH]))
         for resource in resources_list:
             self.print_resource(resource)
@@ -52,9 +53,9 @@ class DocsToLaTeX():
             resource: A Resource object
         """
         textui.puts(textui.columns([resource.title.text.encode('utf-8'), 
-                                   self.COLUMN_WIDTH],
+                                   self.DOUBLE_COLUMN_WIDTH],
                                    [self.get_resource_folder_list(resource), 
-                                   self.COLUMN_WIDTH],
+                                   self.DOUBLE_COLUMN_WIDTH],
                                    [resource.GetResourceType(), 
                                    self.COLUMN_WIDTH]))
 
