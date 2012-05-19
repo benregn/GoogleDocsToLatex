@@ -158,3 +158,18 @@ class DocsToLaTeX():
                                                             current_folder)
 
         utilfunc.remove_ext_txt(file_path)
+
+    def cleanup_leftover_comments(self):
+        pattern = r'\[\w?\]'
+        replacement = ''
+
+        for root, dirs, files in os.walk(self.base_path):
+            for file in files:
+                if file.endswith(('.tex', '.bib',)):
+                    path_to_file = os.path.join(root, file)
+                    with open(path_to_file, "r") as f:
+                        contents = f.read()
+                    with open(path_to_file, "w") as f:
+                        comments_removed = contents.rpartition("[a]")[0]
+                        output = re.sub(pattern, replacement, comments_removed)
+                        f.write(output)
