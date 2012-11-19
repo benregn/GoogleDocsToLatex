@@ -59,6 +59,7 @@ def main():
 
     dtl.download_folder_contents(docs_folder_feed['folder feed'])
     utilfunc.check_for_tex_extension(dtl.base_path)
+    dtl.cleanup_leftover_comments()
 
     comp_latex = CompileLaTeX(dtl.base_path)
     comp_latex.replace_quote_characters()
