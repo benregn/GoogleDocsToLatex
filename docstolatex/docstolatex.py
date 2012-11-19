@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 from gdata.docs import client
 from clint import textui
 import utilityfunctions as utilfunc
@@ -160,7 +161,7 @@ class DocsToLaTeX():
         utilfunc.remove_ext_txt(file_path)
 
     def cleanup_leftover_comments(self):
-        pattern = r'\[\w?\]'
+        pattern = r'\[a-z{1,3}\]' # matches [a], [af], [aau] etc.
         replacement = ''
 
         for root, dirs, files in os.walk(self.base_path):
